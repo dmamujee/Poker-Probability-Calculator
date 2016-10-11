@@ -1,4 +1,10 @@
+#ifndef GAME_H
+#define GAME_H
 #include "card.h"
+#include <iostream>
+using namespace std;
+
+#endif
 
 class Game{
 
@@ -14,7 +20,9 @@ public:
 
 	Game();
 	~Game();
+	
 	void clearGame();
+	void updateCommunal(Card *newCommunalCards[5]);
 
 	// If all communal Cards have come out, then determines the ranking of the hand
 	int handRanking(Card *card1, Card* card2);
@@ -22,6 +30,5 @@ public:
 
 
 
-
-
 };
+ostream& operator<<(ostream& os, const Card& card);

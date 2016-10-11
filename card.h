@@ -1,13 +1,14 @@
 #ifndef CARD_H
+#define CARD_H
 
 const int ACE = 14;
 const int JACK = 11;
-const int Queen = 12;
+const int QUEEN = 12;
 const int KING = 13;
-const int SPADE = 0;
-const int HEART = 1;
-const int DIAMOND = 2;
-const int CLUB = 3;
+const int SPADE = 1000;
+const int HEART = 1001;
+const int DIAMOND = 1002;
+const int CLUB = 1003;
 
 const int STRAIGHT_FLUSH = 101;
 const int FOUR_OF_KIND = 102;
@@ -24,9 +25,11 @@ class Card {
 	int suit;
 
 public:
-	Card(int value; int suit);
+	Card(int value, int suit);
 	int getSuit();
 	int getValue();
+	bool operator==(Card &other);
+	bool operator!=(Card &other);
 
 
 };

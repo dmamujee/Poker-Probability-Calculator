@@ -1,11 +1,20 @@
 #include "card.h"
 
-Card::Card(int value, int suit): value(value),suit(suit){}
+Card::Card(int value, int suit): value(value), suit(suit){}
 
-Card::getSuit(){
+int Card::getSuit() {
 	return suit;
 }
 
-Card::getValue(){
+int Card::getValue() {
 	return value;
 }
+
+// bool Card::operator==(Card &other) {
+// 	return ( ( other.getValue() && this->getValue() )
+// 		&& ( other.getSuit() && this->getSuit() ) );
+// }
+
+// bool Card::operator!=(Card &other) {
+// return !(*this == other);
+// }
