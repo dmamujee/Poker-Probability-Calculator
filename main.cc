@@ -20,7 +20,7 @@ int main(){
 	Card* card14 = new Card(10,DIAMOND);
 
 	Game* game = new Game();
-	Card* communalCards[5] = {card5, card8, card9, card1, card2};
+	Card* communalCards[5] = {card5, card8, card13, card9, card2};
 	Card* Hand[2] = {card3, card4};
 	game->updateCommunal(communalCards);
 

@@ -5,10 +5,10 @@ const int ACE = 14;
 const int JACK = 11;
 const int QUEEN = 12;
 const int KING = 13;
-const int SPADE = 1000;
-const int HEART = 1001;
+const int SPADE = 1004;
+const int HEART = 1003;
 const int DIAMOND = 1002;
-const int CLUB = 1003;
+const int CLUB = 1001;
 
 const int STRAIGHT_FLUSH = 101;
 const int FOUR_OF_KIND = 102;

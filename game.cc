@@ -1,5 +1,6 @@
 #include "game.h"
 #include <typeinfo>
+#include <sstream>
 using namespace std;
 
 ostream& operator<<(ostream& os, Card* card)
@@ -11,8 +12,21 @@ ostream& operator<<(ostream& os, Card* card)
 		else if (suit == DIAMOND) suitOutput = "Diamonds";
 		else if (suit == CLUB) suitOutput = "Clubs";
 
+		string valueOutput = "";
+		int value = card->getValue();
 
-	    os << card->getValue() << " of " << suitOutput;
+		if ( value > 10 ){
+			if (value == 11) os << "Jack";
+			else if (value == 12) os << "Queen";
+			else if (value == 13) os << "King";
+			else if (value == 14) os << "Ace";
+
+		}
+		else{
+			os << value;
+		}
+
+	    os << " of " << suitOutput;
 	    return os;
 	}
 
@@ -101,8 +115,28 @@ int Game::handRanking(Card *card1, Card* card2){
 		}
 	}
 
+	//Sort allCards by value, using Bubble sort
+	// If value is the same, sort in order: Spade, Heart, Diamond, Club
+	for (int i = 1; i < 7; i++){
 
-	
+		if ( allCards[i-1]->getValue() >= allCards[i]->getValue() ){
+			if ( (allCards[i-1]->getValue() == allCards[i]->getValue() ) && 
+			( allCards[i-1]->getSuit() < allCards[i]->getSuit() ) ){
+				continue;
+			}
+			//Swap the 2 elements
+			Card* temp = allCards[i];
+			allCards[i] = allCards[i-1];
+			allCards[i-1] = temp;
+			i = 0;
+		}
+
+	}
+
+
+
+
+
 
 	#ifdef DEBUG
 		cout << "Priting all cards:" << endl;
@@ -110,10 +144,6 @@ int Game::handRanking(Card *card1, Card* card2){
 			cout << allCards[i] << endl;
 		}
 	#endif
-
-	//Sort allCards by value,
-	// If value is the same, sort in order: Spade, Heart, Diamond, Club
-
 
 	//Check if Cards are suited
 	bool suited = false;
