@@ -1,0 +1,45 @@
+#!/bin/bash
+#suite-file can be accessed via $1
+#program can be accessed via $2
+for word in `cat $1`; do
+  if [ "$#" -ne 2 ]; then
+    echo "Incorrect number of arguments" 1>&2
+    exit 1
+  fi
+
+  if [ ! -f "tests/${word}.in" ]; then
+    echo "File not found" 1>&2
+    exit 1
+  fi
+  input=`cat tests/${word}.in`
+
+  if [ ! -f "tests/${word}.out" ]; then
+    echo "File not found" 1>&2
+    exit 1
+  fi
+  output=`cat "tests/${word}.out"`
+
+  filename=`mktemp /tmp/test.XXXXX`
+  if [ -f "tests/${word}.args" ]; then
+    args=`cat "tests/${word}.args"`
+    $2 $args <"tests/${word}.in" >$filename
+
+  else
+    $2 <"tests/${word}.in" >$filename
+  fi
+
+  if ! diff "tests/${word}.out" $filename > /dev/null ; then
+    echo "Test failed: ${word}"
+    echo "Input:"
+    echo ${input}
+    echo "Expected:"
+    echo ${output}
+    echo "Actual:"
+    echo $(cat $filename)
+  else
+    echo "All tests succesfully passed."
+  fi
+  rm $filename
+
+done
+

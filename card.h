@@ -20,6 +20,7 @@ const int TWO_PAIR = 107;
 const int PAIR = 108;
 const int HIGH_CARD = 109;
 
+
 class Card {
 	int value;
 	int suit;

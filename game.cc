@@ -36,7 +36,7 @@ Game::Game(){
 	//Creating every Card in the Deck and placing it into array
 	for (int suit = 0; suit < 4; suit++){
 		for (int value = 2; value < 15; value++){
-			deckOfCards[suit][value - 2] = new Card(value, suit);
+			deckOfCards[suit][value - 2] = new Card(value, suit + CLUB);
 		}
 	}
 
@@ -71,13 +71,48 @@ void Game::clearGame(){
 
 }
 
+Card* Game::getCard(int value, int suit){
+	return deckOfCards[suit-CLUB][value-2];
+}
+
 void Game::updateCommunal(Card *newCommunalCards[5]){
 	for (int i = 0; i < 5; i++){
 		communalCards[i] = newCommunalCards[i];
 	}
 }
 
+void Game::updateSingleCommunal(Card* newCard, int location){
+	if (location < 0 || location > 4) return;
+	communalCards[location] = newCard;
+	}
 
+bool Game::isSuited(Card *allCards[7]){
+	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
+	//Check if the 7 cards are suited for each suit
+	for (int i = 0; i < 4; i++){
+		int counter = 0;
+		for (int j = 0; j < 7; j++){
+			if (allCards[j]->getSuit() == Suits[i]) counter++;
+
+			//If this case is true, then it is impossible for the cards to be suited, so break loop
+			if ( (j - counter) >= 2 ) break;
+		}
+		//If there are 5 cards of the same suit, then store what suit that is, and break loop
+		if (counter >= 5) {
+			return true;
+		}
+
+	}
+
+	return false;
+
+}
+
+string Game::rankToString(int rank){
+	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card"};
+	return cardRanks[rank-STRAIGHT_FLUSH];
+
+}
 
 // If all Communal Cards have come out, then determines the ranking of the hand
 int Game::handRanking(Card *card1, Card* card2){
@@ -134,10 +169,6 @@ int Game::handRanking(Card *card1, Card* card2){
 	}
 
 
-
-
-
-
 	#ifdef DEBUG
 		cout << "Priting all cards:" << endl;
 		for (int i = 0; i < 7; i++){
@@ -146,34 +177,7 @@ int Game::handRanking(Card *card1, Card* card2){
 	#endif
 
 	//Check if Cards are suited
-	bool suited = false;
-	int suit = 0;
-
-
-	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
-	//Check if the 7 cards are suited for each suit
-	for (int i = 0; i < 4; i++){
-		int counter = 0;
-		suit = Suits[i];
-		for (int j = 0; j < 7; j++){
-			
-			if (allCards[j]->getSuit() == suit) counter++;
-
-			//If this case is true, then it is impossible for the cards to be suited, so break loop
-			if ( (j - counter) >= 2 ) break;
-		}
-		//If there are 5 cards of the same suit, then store what suit that is, and break loop
-		if (counter >= 5) {
-			suited = true;
-			suit = i;
-			break;
-		}
-
-	}
-
-	if (suited) return FLUSH;
-	
-
+	if (isSuited(allCards)) return FLUSH;
 
 
 

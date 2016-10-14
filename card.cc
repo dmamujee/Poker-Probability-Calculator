@@ -10,11 +10,11 @@ int Card::getValue() {
 	return value;
 }
 
-// bool Card::operator==(Card &other) {
-// 	return ( ( other.getValue() && this->getValue() )
-// 		&& ( other.getSuit() && this->getSuit() ) );
-// }
+bool Card::operator==(Card &other) {
+	return ( ( other.getValue() && this->getValue() )
+		&& ( other.getSuit() && this->getSuit() ) );
+}
 
-// bool Card::operator!=(Card &other) {
-// return !(*this == other);
-// }
+bool Card::operator!=(Card &other) {
+return !(*this == other);
+}

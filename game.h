@@ -23,6 +23,10 @@ public:
 	
 	void clearGame();
 	void updateCommunal(Card *newCommunalCards[5]);
+	void updateSingleCommunal(Card* newCard, int location);
+	bool isSuited(Card *allCards[7]);
+	string rankToString(int rank);
+	Card* getCard(int value, int suit);
 
 	// If all communal Cards have come out, then determines the ranking of the hand
 	int handRanking(Card *card1, Card* card2);

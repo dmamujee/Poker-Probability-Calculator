@@ -1,31 +1,48 @@
 #include <iostream>
 #include "game.h"
 #include "card.h"
+#include "string.h"
 using namespace std;
 
-int main(){
-	Card* card1 = new Card(2,CLUB);
-	Card* card2 = new Card(3,CLUB);
-	Card* card3 = new Card(4,HEART);
-	Card* card4 = new Card(5,HEART);
-	Card* card5 = new Card(6,HEART);
-	Card* card6 = new Card(10,SPADE);
-	Card* card7 = new Card(JACK,DIAMOND);
-	Card* card8 = new Card(QUEEN,HEART);
-	Card* card9 = new Card(KING,HEART);
-	Card* card10 = new Card(ACE,SPADE);
-	Card* card11 = new Card(ACE,DIAMOND);
-	Card* card12 = new Card(ACE,CLUB);
-	Card* card13 = new Card(KING,SPADE);
-	Card* card14 = new Card(10,DIAMOND);
+ostream& operator<<(ostream& os, Card* card);
+
+int main(int argc, char *argv[]){
 
 	Game* game = new Game();
-	Card* communalCards[5] = {card5, card8, card13, card9, card2};
-	Card* Hand[2] = {card3, card4};
-	game->updateCommunal(communalCards);
+	Card* hand[2];
+	
+	//Get Cards from input
+	for (int i = 0; i < 7; i++){
+		int value,suitInt;
+		char suit;
 
-	//Should be a flush
-	cout << "Hand Ranking: " << game->handRanking(card3, card4) << endl;	
+		cin >> value >> suit;
+		if (suit == 'S') suitInt = SPADE;
+		else if (suit == 'H') suitInt = HEART;
+		else if (suit == 'D') suitInt = DIAMOND;
+		else if (suit == 'C') suitInt = CLUB;
+		else{
+			cout << "Error, Incorrect syntax";
+			i--;
+			continue;
+		}
+
+		if (value < 2 || value > 14){
+			cout << "Error, Invalid Value";
+			i--;
+			continue;
+		}
+
+		Card* card = game->getCard(value, suitInt);
+		if (i < 5){
+			game->updateSingleCommunal(card,i);
+		}
+		else hand[i-5] = card;
+	}
+
+	if ( strcmp(argv[1], "ranking") == 0 ){
+		cout << "Hand Ranking: " << game->rankToString( game->handRanking(hand[0], hand[1]) ) << endl;
+	}
 
 
 }
