@@ -1,6 +1,8 @@
 #!/bin/bash
 #suite-file can be accessed via $1
 #program can be accessed via $2
+fail=false
+
 for word in `cat $1`; do
   if [ "$#" -ne 2 ]; then
     echo "Incorrect number of arguments" 1>&2
@@ -8,13 +10,13 @@ for word in `cat $1`; do
   fi
 
   if [ ! -f "tests/${word}.in" ]; then
-    echo "File not found" 1>&2
+    echo "File tests/${word}.in not found" 1>&2
     exit 1
   fi
   input=`cat tests/${word}.in`
 
   if [ ! -f "tests/${word}.out" ]; then
-    echo "File not found" 1>&2
+    echo "File tests/${word}.out not found" 1>&2
     exit 1
   fi
   output=`cat "tests/${word}.out"`
@@ -36,10 +38,12 @@ for word in `cat $1`; do
     echo ${output}
     echo "Actual:"
     echo $(cat $filename)
-  else
-    echo "All tests succesfully passed."
+    $fail=true
   fi
   rm $filename
 
 done
 
+if [ "$fail" = false ] ; then
+  echo "All `cat $1 | sed '/^\s*$/d' | wc -l` tests succesfully passed"
+fi
