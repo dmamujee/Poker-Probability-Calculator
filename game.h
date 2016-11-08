@@ -24,7 +24,8 @@ public:
 	void clearGame();
 	void updateCommunal(Card *newCommunalCards[5]);
 	void updateSingleCommunal(Card* newCard, int location);
-	bool isSuited(Card *allCards[7]);
+	bool isFlush(Card *allCards[7]);
+	bool isQuads(Card *allCards[7]);
 	string rankToString(int rank);
 	Card* getCard(int value, int suit);
 

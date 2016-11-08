@@ -86,7 +86,7 @@ void Game::updateSingleCommunal(Card* newCard, int location){
 	communalCards[location] = newCard;
 	}
 
-bool Game::isSuited(Card *allCards[7]){
+bool Game::isFlush(Card *allCards[7]){
 	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
 	//Check if the 7 cards are suited for each suit
 	for (int i = 0; i < 4; i++){
@@ -108,8 +108,14 @@ bool Game::isSuited(Card *allCards[7]){
 
 }
 
+bool Game::isQuads(Card *allCards[7]){
+	return true;
+
+}
+
 string Game::rankToString(int rank){
-	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House", "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card"};
+	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House",
+	 "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card", "Invalid"};
 	return cardRanks[rank-STRAIGHT_FLUSH];
 
 }
@@ -145,7 +151,7 @@ int Game::handRanking(Card *card1, Card* card2){
 					cout << "Card" << j << ": " << allCards[j] << endl;
 				#endif
 
-				return -1;
+				return INVALID;
 			}
 		}
 	}
@@ -177,9 +183,6 @@ int Game::handRanking(Card *card1, Card* card2){
 	#endif
 
 	//Check if Cards are suited
-	if (isSuited(allCards)) return FLUSH;
-
-
 
 
 	//Check if Cards can create a straight flush
@@ -191,6 +194,8 @@ int Game::handRanking(Card *card1, Card* card2){
 	//Check if Cards can create a Full House
 
 	//Check if Cards can create a Flush
+
+	if (isFlush(allCards)) return FLUSH;
 
 
 	//Check if Cards can create a Straight
@@ -208,11 +213,7 @@ int Game::handRanking(Card *card1, Card* card2){
 	//Only possible hand left that the Cards could create is a High Card
 
 
-	else return -100;
-
-	
-
-
+	else return INVALID;
 
 
 }
