@@ -6,4 +6,7 @@ flush5
 invalid1
 invalid2
 invalid3
-
+quads1
+quads2
+quads3
+quads4

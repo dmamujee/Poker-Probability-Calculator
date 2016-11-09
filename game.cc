@@ -109,8 +109,17 @@ bool Game::isFlush(Card *allCards[7]){
 }
 
 bool Game::isQuads(Card *allCards[7]){
-	return true;
+	//Since we know that the Cards will be sorted, we just need to go 4 cards
+	//after each card to check if there are 4 of the same kind
+	for (int i = 0; i < 4; i++){
+		for (int j = i+1; j < i+4; j++){
+			//If 2 cards match, don't match then break
+			if ( allCards[i]->getValue() != allCards[j]->getValue() ) break;
+			else if (j == i+3) return true;
+		}
+	}
 
+	return false;
 }
 
 string Game::rankToString(int rank){
@@ -189,6 +198,7 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Check if Cards can create 4 of a Kind
+	if (isQuads(allCards)) return FOUR_OF_KIND;
 
 
 	//Check if Cards can create a Full House
