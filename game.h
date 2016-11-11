@@ -26,6 +26,7 @@ public:
 	void updateSingleCommunal(Card* newCard, int location);
 	bool isFlush(Card *allCards[7]);
 	bool isQuads(Card *allCards[7]);
+	bool isStraight(Card *allCards[7]);
 	string rankToString(int rank);
 	Card* getCard(int value, int suit);
 

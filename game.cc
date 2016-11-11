@@ -122,6 +122,20 @@ bool Game::isQuads(Card *allCards[7]){
 	return false;
 }
 
+bool Game::isStraight(Card *allCards[7]){
+	int cardsInStraight = 0;
+	for(int location = 0; location < 6; location++){		
+		if( (location - cardsInStraight) > 3 ) return false;
+		if (allCards[location]->getValue() == allCards[location+1]->getValue()) continue;
+		else if ( (allCards[location]->getValue() + 1) == allCards[location+1]->getValue()){
+			cardsInStraight++;
+		}
+		else cardsInStraight = 0;
+		if (cardsInStraight == 4) return true;
+	}
+	return false;
+}
+
 string Game::rankToString(int rank){
 	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House",
 	 "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card", "Invalid"};
@@ -209,6 +223,8 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Check if Cards can create a Straight
+
+	if (isStraight(allCards)) return STRAIGHT;
 
 
 	//Check if cards can create 3 of a Kind
