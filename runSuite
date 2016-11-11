@@ -38,7 +38,7 @@ for word in `cat $1`; do
     echo ${output}
     echo "Actual:"
     echo $(cat $filename)
-    $fail=true
+    fail=true
   fi
   rm $filename
 
