@@ -10,3 +10,7 @@ quads1
 quads2
 quads3
 quads4
+straight1
+straight2
+straight3
+straight4
