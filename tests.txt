@@ -14,3 +14,6 @@ straight1
 straight2
 straight3
 straight4
+onePair1
+onePair2
+onePair3
