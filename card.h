@@ -17,7 +17,7 @@ const int FLUSH = 104;
 const int STRAIGHT = 105;
 const int THREE_OF_A_KIND = 106;
 const int TWO_PAIR = 107;
-const int PAIR = 108;
+const int ONE_PAIR = 108;
 const int HIGH_CARD = 109;
 const int INVALID = 110;
 

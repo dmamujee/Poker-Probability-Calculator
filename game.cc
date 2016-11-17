@@ -136,6 +136,19 @@ bool Game::isStraight(Card *allCards[7]){
 	return false;
 }
 
+bool Game::isOnePair(Card *allCards[7]){
+	bool foundPair = false;
+	for (int i = 0; i < 6; i++){
+			if (allCards[i]->getValue() == allCards[i+1]->getValue()){
+				if (!foundPair) foundPair = true;
+				else return false;
+			}
+	}
+
+	if (foundPair) return true;
+	else return false;
+}
+
 string Game::rankToString(int rank){
 	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House",
 	 "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card", "Invalid"};
@@ -234,6 +247,7 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Checks if Cards cane create a Pair;
+	if (isOnePair(allCards)) return ONE_PAIR;
 
 
 	//Only possible hand left that the Cards could create is a High Card
