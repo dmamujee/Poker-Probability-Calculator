@@ -136,6 +136,17 @@ bool Game::isStraight(Card *allCards[7]){
 	return false;
 }
 
+bool Game::isTriple(Card *allCards[7]){
+	for (int i = 0; i < 5; i++){
+			if (allCards[i]->getValue() == allCards[i+1]->getValue()
+				&& allCards[i]->getValue() == allCards[i+2]->getValue()){
+				return true;
+			}
+	}
+
+	return false;
+}
+
 bool Game::isOnePair(Card *allCards[7]){
 	bool foundPair = false;
 	for (int i = 0; i < 6; i++){
@@ -241,6 +252,8 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Check if cards can create 3 of a Kind
+
+	if (isTriple(allCards)) return THREE_OF_A_KIND;
 
 
 	// Check if Cards can create 2 Pairs
