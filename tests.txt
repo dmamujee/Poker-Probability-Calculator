@@ -17,3 +17,6 @@ straight4
 onePair1
 onePair2
 onePair3
+triple1
+triple2
+triple3
