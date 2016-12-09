@@ -30,6 +30,7 @@ public:
 	bool isTriple(Card *allCards[7]);
 	bool isOnePair(Card *allCards[7]);
 	bool isStraightFlush(Card *allCards[7]);
+	bool isTwoPair(Card *allCards[7]);
 	string rankToString(int rank);
 	Card* getCard(int value, int suit);
 

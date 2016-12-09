@@ -160,6 +160,7 @@ bool Game::isOnePair(Card *allCards[7]){
 	else return false;
 }
 
+
 bool Game::isStraightFlush(Card *allCards[7]){
 	int cardsInStraight = 0;
 	for(int location = 0; location < 6; location++){		
@@ -205,12 +206,25 @@ bool Game::isStraightFlush(Card *allCards[7]){
 
 		if (cardsInStraight == 4) return true;
 	}
+
+	return false;
+}
+
+bool Game::isTwoPair(Card *allCards[7]){
+	bool foundPair = false;
+	for (int i = 0; i < 6; i++){
+			if (allCards[i]->getValue() == allCards[i+1]->getValue()){
+				if (!foundPair) foundPair = true;
+				else return true;
+			}
+	}
+
 	return false;
 }
 
 string Game::rankToString(int rank){
 	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House",
-	 "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card", "Invalid"};
+	 "Flush", "Straight", "Three of a Kind", "Two Pair", "One Pair", "High Card", "Invalid"};
 	return cardRanks[rank-STRAIGHT_FLUSH];
 
 }
@@ -306,6 +320,8 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	// Check if Cards can create 2 Pairs
+
+	if (isTwoPair(allCards)) return TWO_PAIR;
 
 
 	//Checks if Cards cane create a Pair;

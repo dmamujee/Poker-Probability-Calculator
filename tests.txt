@@ -25,3 +25,6 @@ straightFlush2
 straightFlush3
 straightFlush4
 straightFlush5
+twoPair1
+twoPair2
+twoPair3
