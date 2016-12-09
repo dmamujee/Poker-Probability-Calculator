@@ -20,3 +20,8 @@ onePair3
 triple1
 triple2
 triple3
+straightFlush1
+straightFlush2
+straightFlush3
+straightFlush4
+straightFlush5

@@ -1,0 +1,3 @@
+straightFlush3
+straightFlush4
+straightFlush5
