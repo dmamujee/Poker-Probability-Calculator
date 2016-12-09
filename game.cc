@@ -160,6 +160,54 @@ bool Game::isOnePair(Card *allCards[7]){
 	else return false;
 }
 
+bool Game::isStraightFlush(Card *allCards[7]){
+	int cardsInStraight = 0;
+	for(int location = 0; location < 6; location++){		
+		if( (location - cardsInStraight) > 4 ) return false;
+
+		//If the next card is the same value, or if the next card is one value higher but different suit
+		if (allCards[location]->getValue() == allCards[location+1]->getValue()
+		|| (allCards[location]->getValue()+1 == allCards[location+1]->getValue() 
+				&& allCards[location]->getSuit() != allCards[location+1]->getSuit() ) ) {
+
+			if (location == 5) return false;
+
+			else if (allCards[location]->getValue() == (allCards[location+2]->getValue() - 1)
+				&& allCards[location]->getSuit() == allCards[location+2]->getSuit() ){
+
+				location++;
+				cardsInStraight++;
+			}
+
+			else if (location == 4) return false;
+
+			else if (allCards[location]->getValue() == (allCards[location+3]->getValue() - 1)
+				&& allCards[location]->getSuit() == allCards[location+3]->getSuit() ){
+				location = location + 2;
+				cardsInStraight++;
+			}
+
+			else{
+				cardsInStraight = 0;
+			}
+
+
+		}
+
+		else if ( (allCards[location]->getValue() + 1) == allCards[location+1]->getValue() 
+			&& (allCards[location]->getSuit() == allCards[location+1]->getSuit() ) )  {
+			cardsInStraight++;
+		}
+
+		else{
+			cardsInStraight = 0;				
+		} 
+
+		if (cardsInStraight == 4) return true;
+	}
+	return false;
+}
+
 string Game::rankToString(int rank){
 	const char* cardRanks[] = {"Straight Flush", "Four of a Kind", "Full House",
 	 "Flush", "Straight", "Three of a Kind", " Two Pair", "One Pair", "High Card", "Invalid"};
@@ -233,6 +281,7 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Check if Cards can create a straight flush
+	if (isStraightFlush(allCards)) return STRAIGHT_FLUSH;
 
 
 	//Check if Cards can create 4 of a Kind
