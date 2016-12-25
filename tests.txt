@@ -28,3 +28,6 @@ straightFlush5
 twoPair1
 twoPair2
 twoPair3
+fullHouse1
+fullHouse2
+fullHouse3
