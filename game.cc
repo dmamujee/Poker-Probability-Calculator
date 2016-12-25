@@ -21,8 +21,7 @@ ostream& operator<<(ostream& os, Card* card)
 			else if (value == 13) os << "King";
 			else if (value == 14) os << "Ace";
 
-		}
-		else{
+		} else {
 			os << value;
 		}
 
@@ -160,7 +159,6 @@ bool Game::isOnePair(Card *allCards[7]){
 	else return false;
 }
 
-
 bool Game::isStraightFlush(Card *allCards[7]){
 	int cardsInStraight = 0;
 	for(int location = 0; location < 6; location++){		
@@ -188,7 +186,7 @@ bool Game::isStraightFlush(Card *allCards[7]){
 				cardsInStraight++;
 			}
 
-			else{
+			else {
 				cardsInStraight = 0;
 			}
 
@@ -200,7 +198,7 @@ bool Game::isStraightFlush(Card *allCards[7]){
 			cardsInStraight++;
 		}
 
-		else{
+		else {
 			cardsInStraight = 0;				
 		} 
 
@@ -220,6 +218,28 @@ bool Game::isTwoPair(Card *allCards[7]){
 	}
 
 	return false;
+}
+
+bool Game::isFullHouse(Card *allCards[7]){
+	bool foundPair = false;
+	bool foundTriple = false;
+	for (int i = 0; i < 6; i++){
+			if (allCards[i]->getValue() == allCards[i+1]->getValue()){
+				if (i < 5 && !foundTriple){
+					if (allCards[i]->getValue() == allCards[i+2]->getValue()){
+						foundTriple = true;
+						i++;
+					}
+					else foundPair = true;
+
+				}
+				else foundPair = true;
+			}
+			if (foundPair && foundTriple) return true;
+	}
+
+	return false;
+
 }
 
 string Game::rankToString(int rank){
@@ -303,6 +323,7 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Check if Cards can create a Full House
+	if (isFullHouse(allCards)) return FULL_HOUSE;
 
 	//Check if Cards can create a Flush
 
