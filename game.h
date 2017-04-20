@@ -38,6 +38,8 @@ public:
 	// If all communal Cards have come out, then determines the ranking of the hand
 	int handRanking(Hand* hand);
 
+	int handComparison(Hand* hand1, Hand* hand2);
+
 
 
 

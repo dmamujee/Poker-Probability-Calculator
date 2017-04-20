@@ -46,6 +46,7 @@ class Hand {
 public:
 	Hand(Card* card0, Card* card1);
 	Hand();
+	//Input only can be 0 or 1
 	Card* getCard(int i);
 	void setCard(int i, Card* card);
 

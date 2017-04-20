@@ -14,9 +14,11 @@ int main(int argc, char *argv[]){
 	for (int i = 0; i < 10; i++){
 		hand[i] = new Hand();
 	}
+	int cards = 7;
+	if (strcmp(argv[1], "comparison") == 0) cards = 9;
 	
 	//Get Cards from input
-	for (int i = 0; i < 7; i++){
+	for (int i = 0; i < cards; i++){
 		int value,suitInt;
 		char suit;
 
@@ -45,7 +47,11 @@ int main(int argc, char *argv[]){
 
 	if ( strcmp(argv[1], "ranking") == 0 ){
 		cout << "Hand Ranking: " << game->rankToString( game->handRanking(hand[0]) ) << endl;
+	} else if ( strcmp(argv[1], "comparison") == 0 ){
+		cout << "Hand Winner: " << game->handComparison(hand[0],hand[1]) << endl;
 	}
+
+
 
 
 }

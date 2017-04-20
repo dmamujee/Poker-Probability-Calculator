@@ -35,3 +35,8 @@ highCard1
 highCard2
 highCard3
 straightWheel
+
+pairVhigh1
+highvHigh1
+highvHigh2
+highvHigh3

@@ -285,7 +285,7 @@ int Game::handRanking(Hand* hand){
 		for (int j = 0; j < 7; j++){
 			if ( (i != j) && (allCards[i] == allCards[j]) ) {
 				#ifdef DEBUG
-					cout << "Given hand is same card as communal card" << endl;
+					cout << "ERROR: game.cc: Given hand is same card as communal card" << endl;
 					cout << "Card" << i << ": " << allCards[i] << endl;
 					cout << "Card" << j << ": " << allCards[j] << endl;
 				#endif
@@ -367,6 +367,106 @@ int Game::handRanking(Hand* hand){
 	else return HIGH_CARD;
 
 
+}
+
+
+/*
+int handComparison(Hand* hand1, Hand* hand2):
+Ouput:
+1 = Hand 1 wins
+2 = Hand 2 wins
+0 = tie
+-1 = ERROR
+
+*/
+
+int Game::handComparison(Hand* hand1, Hand* hand2){
+	
+	//Check that niether of the hands have the same cards
+	for (int i = 0; i < 2; i++){
+		for (int j = 0; j < 2; j++){
+			if (hand1->getCard(i) == hand2->getCard(j)){
+			#ifdef DEBUG
+				cout << "ERROR, 2 hands share cards: game.cc: Game::handComparison()" << endl;
+			#endif
+				return -1;
+			}
+		}
+	}
+
+
+	int hand1Ranking = handRanking(hand1);
+	int hand2Ranking = handRanking(hand2);
+
+	if (hand1Ranking < hand2Ranking) return 1;
+	else if (hand1Ranking > hand2Ranking) return 2;
+
+	/*
+	If we get to this point, then the 2 hands have the same value.
+	This means that we must find the values and kickers involved
+	*/
+
+	Card* hand1AllCards[7];
+	Card* hand2AllCards[7];
+
+	for (int i = 0; i < 5; i++){
+		//Place hole cards in the allCards array
+		if (i < 2){
+			hand1AllCards[5+i] = hand1->getCard(i);
+			hand2AllCards[5+i] = hand2->getCard(i);
+		}
+		hand1AllCards[i] = communalCards[i];
+		hand2AllCards[i] = communalCards[i];
+	}
+
+	//Sort hand1AllCards by value, using Bubble sort
+	// If value is the same, sort in order: Spade, Heart, Diamond, Club
+	for (int i = 1; i < 7; i++){
+
+		if ( hand1AllCards[i-1]->getValue() >= hand1AllCards[i]->getValue() ){
+			if ( (hand1AllCards[i-1]->getValue() == hand1AllCards[i]->getValue() ) && 
+			( hand1AllCards[i-1]->getSuit() < hand1AllCards[i]->getSuit() ) ){
+				continue;
+			}
+			//Swap the 2 elements
+			Card* temp = hand1AllCards[i];
+			hand1AllCards[i] = hand1AllCards[i-1];
+			hand1AllCards[i-1] = temp;
+			i = 0;
+		}
+
+	}
+
+	//Sort hand2AllCards by value, using Bubble sort
+	// If value is the same, sort in order: Spade, Heart, Diamond, Club
+	for (int i = 1; i < 7; i++){
+
+		if ( hand2AllCards[i-1]->getValue() >= hand2AllCards[i]->getValue() ){
+			if ( (hand2AllCards[i-1]->getValue() == hand2AllCards[i]->getValue() ) && 
+			( hand2AllCards[i-1]->getSuit() < hand2AllCards[i]->getSuit() ) ){
+				continue;
+			}
+			//Swap the 2 elements
+			Card* temp = hand2AllCards[i];
+			hand2AllCards[i] = hand2AllCards[i-1];
+			hand2AllCards[i-1] = temp;
+			i = 0;
+		}
+
+	}
+
+
+	if (hand1Ranking == HIGH_CARD){
+
+		for (int i = 6; i > 1; i--){
+			if (hand1AllCards[i]->getValue() > hand2AllCards[i]->getValue()) return 1;
+			else if (hand1AllCards[i]->getValue() < hand2AllCards[i]->getValue()) return 2;
+
+		}
+		return 0;
+	}
+
+	return -1;
 }
 
 
