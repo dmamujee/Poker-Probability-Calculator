@@ -9,7 +9,11 @@ ostream& operator<<(ostream& os, Card* card);
 int main(int argc, char *argv[]){
 
 	Game* game = new Game();
-	Hand* hand = new Hand();
+	Hand* hand[10];
+
+	for (int i = 0; i < 10; i++){
+		hand[i] = new Hand();
+	}
 	
 	//Get Cards from input
 	for (int i = 0; i < 7; i++){
@@ -36,12 +40,11 @@ int main(int argc, char *argv[]){
 		Card* card = game->getCard(value, suitInt);
 		if (i < 5){
 			game->updateSingleCommunal(card,i);
-		}
-		else hand->setCard(i-4,card);
+		} else hand[(i-5)/2]->setCard( (i-1)%2 ,card);
 	}
 
 	if ( strcmp(argv[1], "ranking") == 0 ){
-		cout << "Hand Ranking: " << game->rankToString( game->handRanking(hand) ) << endl;
+		cout << "Hand Ranking: " << game->rankToString( game->handRanking(hand[0]) ) << endl;
 	}
 
 

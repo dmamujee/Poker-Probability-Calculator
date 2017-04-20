@@ -277,8 +277,8 @@ int Game::handRanking(Hand* hand){
 		else allCards[i] = communalCards[i];
 	}
  	
- 	allCards[5] = hand->getCard(1);
-	allCards[6] = hand->getCard(2);
+ 	allCards[5] = hand->getCard(0);
+	allCards[6] = hand->getCard(1);
 
  	//Checks that none of the communal cards, or the given hand, are the same
 	for (int i = 0; i < 7; i++){

@@ -40,11 +40,11 @@ public:
 };
 
 class Hand {
+	Card* card0;
 	Card* card1;
-	Card* card2;
 
 public:
-	Hand(Card* card1, Card* card2);
+	Hand(Card* card0, Card* card1);
 	Hand();
 	Card* getCard(int i);
 	void setCard(int i, Card* card);

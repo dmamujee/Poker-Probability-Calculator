@@ -21,13 +21,13 @@ return !(*this == other);
 }
 
 
-Hand::Hand(Card* card1, Card* card2): card1(card1), card2(card2){}
+Hand::Hand(Card* card0, Card* card1): card0(card0), card1(card1){}
 
-Hand::Hand(): card1(NULL), card2(NULL){}
+Hand::Hand(): card0(NULL), card1(NULL){}
 
 Card* Hand::getCard(int i){
-	if (i == 1) return this->card1;
-	else if (i == 2) return this->card2;
+	if (i == 0) return this->card0;
+	else if (i == 1) return this->card1;
 	else {
 		cout << "ERROR: card.cc: Hand::getCard()" << endl;
 		return NULL;
@@ -35,7 +35,7 @@ Card* Hand::getCard(int i){
 }
 
 void Hand::setCard(int i, Card* card){
-	if (i == 1) this->card1 = card;
-	else if (i == 2) this->card2 = card;
+	if (i == 0) this->card0 = card;
+	else if (i == 1) this->card1 = card;
 	else cout << "ERROR: card.cc: Hand::setCard()" << endl;
 }
