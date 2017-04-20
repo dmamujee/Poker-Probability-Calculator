@@ -123,10 +123,20 @@ bool Game::isQuads(Card *allCards[7]){
 
 bool Game::isStraight(Card *allCards[7]){
 	int cardsInStraight = 0;
-	for(int location = 0; location < 6; location++){		
+	for(int location = 0; location < 6; location++){	
+		//If we have more than a difference of 3 between cards found and cards left, then
+		//impossible to have a straight, so we return false
 		if( (location - cardsInStraight) > 3 ) return false;
+
+		//If current card and next card have the same value, then continue 
 		if (allCards[location]->getValue() == allCards[location+1]->getValue()) continue;
-		else if ( (allCards[location]->getValue() + 1) == allCards[location+1]->getValue()){
+
+		//Finds wheel straights, by check if for an ace when finding a 2
+		if (allCards[location]->getValue() == 2 && allCards[6]->getValue() == 14 ){
+			cardsInStraight++;
+		}
+
+		if ( (allCards[location]->getValue() + 1) == allCards[location+1]->getValue()){
 			cardsInStraight++;
 		}
 		else cardsInStraight = 0;
