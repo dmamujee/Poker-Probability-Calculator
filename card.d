@@ -1,1 +1,1 @@
-card.o: card.cc card.h
+card.o: card.cc card.h game.h

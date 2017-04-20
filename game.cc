@@ -260,7 +260,7 @@ string Game::rankToString(int rank){
 }
 
 // If all Communal Cards have come out, then determines the ranking of the hand
-int Game::handRanking(Card *card1, Card* card2){
+int Game::handRanking(Hand* hand){
 
 
 	Card* allCards[7];
@@ -277,8 +277,8 @@ int Game::handRanking(Card *card1, Card* card2){
 		else allCards[i] = communalCards[i];
 	}
  	
- 	allCards[5] = card1;
-	allCards[6] = card2;
+ 	allCards[5] = hand->getCard(1);
+	allCards[6] = hand->getCard(2);
 
  	//Checks that none of the communal cards, or the given hand, are the same
 	for (int i = 0; i < 7; i++){
@@ -368,3 +368,6 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 }
+
+
+

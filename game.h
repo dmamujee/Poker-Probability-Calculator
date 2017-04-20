@@ -36,7 +36,7 @@ public:
 	Card* getCard(int value, int suit);
 
 	// If all communal Cards have come out, then determines the ranking of the hand
-	int handRanking(Card *card1, Card* card2);
+	int handRanking(Hand* hand);
 
 
 

@@ -39,4 +39,16 @@ public:
 
 };
 
+class Hand {
+	Card* card1;
+	Card* card2;
+
+public:
+	Hand(Card* card1, Card* card2);
+	Hand();
+	Card* getCard(int i);
+	void setCard(int i, Card* card);
+
+};
+
 #endif
