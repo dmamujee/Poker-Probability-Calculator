@@ -10,6 +10,9 @@ const int HEART = 1003;
 const int DIAMOND = 1002;
 const int CLUB = 1001;
 
+// Card values go from 2 to 14
+
+
 const int STRAIGHT_FLUSH = 101;
 const int FOUR_OF_KIND = 102;
 const int FULL_HOUSE = 103;

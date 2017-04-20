@@ -311,8 +311,16 @@ int Game::handRanking(Card *card1, Card* card2){
 		}
 	#endif
 
-	//Check if Cards are suited
 
+
+	/*TODO:
+		In future, if order of this check is reversed will reverse overall runtime.
+		The Straight Flush is the least likely hand, but it takes the most time to check,
+		so it doesn't really make sense to be checking it everytime.
+
+		To do this the individual functions for each hand ranking will need to be changed
+
+	*/
 
 	//Check if Cards can create a straight flush
 	if (isStraightFlush(allCards)) return STRAIGHT_FLUSH;
@@ -326,22 +334,18 @@ int Game::handRanking(Card *card1, Card* card2){
 	if (isFullHouse(allCards)) return FULL_HOUSE;
 
 	//Check if Cards can create a Flush
-
 	if (isFlush(allCards)) return FLUSH;
 
 
 	//Check if Cards can create a Straight
-
 	if (isStraight(allCards)) return STRAIGHT;
 
 
 	//Check if cards can create 3 of a Kind
-
 	if (isTriple(allCards)) return THREE_OF_A_KIND;
 
 
 	// Check if Cards can create 2 Pairs
-
 	if (isTwoPair(allCards)) return TWO_PAIR;
 
 
@@ -350,9 +354,7 @@ int Game::handRanking(Card *card1, Card* card2){
 
 
 	//Only possible hand left that the Cards could create is a High Card
-
-
-	else return INVALID;
+	else return HIGH_CARD;
 
 
 }

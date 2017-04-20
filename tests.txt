@@ -31,3 +31,6 @@ twoPair3
 fullHouse1
 fullHouse2
 fullHouse3
+highCard1
+highCard2
+highCard3
