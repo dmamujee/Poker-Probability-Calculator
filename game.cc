@@ -466,6 +466,36 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		return 0;
 	}
 
+	if (hand1Ranking == ONE_PAIR){
+		int hand1Pair = 0;
+		int hand2Pair = 0;
+
+		for (int i = 0; i < 6; i++){
+			if (hand1AllCards[i]->getValue() == hand1AllCards[i+1]->getValue() ){
+				hand1Pair = hand1AllCards[i]->getValue();
+			}
+			if (hand2AllCards[i]->getValue() == hand2AllCards[i+1]->getValue() ){
+				hand2Pair = hand2AllCards[i]->getValue();
+			}
+		}
+		if (hand1Pair == 0 || hand2Pair == 0) cout << endl << "ERROR: game.cc: handComparison()" << endl;
+
+		if (hand1Pair > hand2Pair) return 1;
+		else if (hand1Pair < hand2Pair) return 2;
+
+		int count = 0;
+
+		for (int i = 6; i >= 0; i--){
+			if (hand1AllCards[i]->getValue() == hand1Pair) continue;
+			if (hand1AllCards[i]->getValue() > hand2AllCards[i]->getValue()) return 1;
+			if (hand1AllCards[i]->getValue() < hand2AllCards[i]->getValue()) return 2;
+			count++;
+			if (count >= 3) return 0;
+		}
+
+		return -2;
+	}
+
 	if (hand1Ranking == FLUSH){
 		Card* hand1Flush[5];
 		Card* hand2Flush[5];

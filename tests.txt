@@ -43,4 +43,7 @@ highvHigh3
 flushvFlush1
 flushvFlush2
 flushvFlush3
-
+onePairvOnePair1
+onePairvOnePair2
+onePairvOnePair3
+onePairvOnePair4
