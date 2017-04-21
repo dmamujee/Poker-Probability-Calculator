@@ -269,7 +269,7 @@ int Game::handRanking(Hand* hand){
 	for (int i = 0; i < 5; i++){
 		if (communalCards[i] == NULL) {
 			#ifdef DEBUG
-				cout << "Communal Card is NULL" << endl;
+				cout << endl << "ERROR: game.cc: Game::handRanking(): Communal Card is NULL" << endl;
 			#endif
 
 			return -1;
@@ -285,7 +285,7 @@ int Game::handRanking(Hand* hand){
 		for (int j = 0; j < 7; j++){
 			if ( (i != j) && (allCards[i] == allCards[j]) ) {
 				#ifdef DEBUG
-					cout << "ERROR: game.cc: Given hand is same card as communal card" << endl;
+					cout << endl << "ERROR: game.cc: Given hand is same card as communal card" << endl;
 					cout << "Card" << i << ": " << allCards[i] << endl;
 					cout << "Card" << j << ": " << allCards[j] << endl;
 				#endif
@@ -387,7 +387,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		for (int j = 0; j < 2; j++){
 			if (hand1->getCard(i) == hand2->getCard(j)){
 			#ifdef DEBUG
-				cout << "ERROR, 2 hands share cards: game.cc: Game::handComparison()" << endl;
+				cout << endl << "ERROR, 2 hands share cards: game.cc: Game::handComparison()" << endl;
 			#endif
 				return -1;
 			}
@@ -464,6 +464,54 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 		}
 		return 0;
+	}
+
+	if (hand1Ranking == FLUSH){
+		Card* hand1Flush[5];
+		Card* hand2Flush[5];
+
+
+		int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
+		//Check if the 7 cards are suited for each suit
+		for (int i = 0; i < 4; i++){
+			int counter = 0;
+			for (int j = 6; j >= 0; j--){
+				if (hand1AllCards[j]->getSuit() == Suits[i]){
+					hand1Flush[counter] = hand1AllCards[j];
+					counter++;
+				}
+
+				//If this case is true, then it is impossible for the cards to be suited, so break loop
+				if ( (j + counter) < 4 ) break;
+			}
+			if (counter >= 5) {
+				break;
+			}
+		}
+		for (int i = 0; i < 4; i++){
+			int counter = 0;
+			for (int j = 6; j >= 0; j--){
+				if (hand2AllCards[j]->getSuit() == Suits[i]){
+					hand2Flush[counter] = hand2AllCards[j];
+					counter++;
+				}
+
+				//If this case is true, then it is impossible for the cards to be suited, so break loop
+				if ( (j + counter) < 4 ) break;
+			}
+			if (counter >= 5) {
+				break;
+			}
+		}
+		//At this point we can assume that in each of the hand*Flush arrays, they hold the 5
+		//Cards of one suit. So we can just compare them to who has the highest card
+		for (int i = 4; i >= 0; i--){
+			if (hand1Flush[i]->getValue() > hand2Flush[i]->getValue()) return 1;
+			else if (hand1Flush[i]->getValue() < hand2Flush[i]->getValue()) return 2;
+
+		}
+		return 0;
+
 	}
 
 	return -1;

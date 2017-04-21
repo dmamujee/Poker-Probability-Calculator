@@ -6,6 +6,8 @@ using namespace std;
 
 ostream& operator<<(ostream& os, Card* card);
 
+//TODO: in main(), have main keep intaking input until EOF
+
 int main(int argc, char *argv[]){
 
 	Game* game = new Game();
@@ -14,6 +16,8 @@ int main(int argc, char *argv[]){
 	for (int i = 0; i < 10; i++){
 		hand[i] = new Hand();
 	}
+	
+	//TODO Change this!!!!!
 	int cards = 7;
 	if (strcmp(argv[1], "comparison") == 0) cards = 9;
 	
@@ -28,13 +32,13 @@ int main(int argc, char *argv[]){
 		else if (suit == 'D') suitInt = DIAMOND;
 		else if (suit == 'C') suitInt = CLUB;
 		else{
-			cout << "Error, Incorrect syntax";
+			cout << endl << "ERROR: main.cc: main(): Incorrect syntax";
 			i--;
 			continue;
 		}
 
 		if (value < 2 || value > 14){
-			cout << "Error, Invalid Value";
+			cout << endl << "ERROR: main.cc: main(): Invalid Value";
 			i--;
 			continue;
 		}
