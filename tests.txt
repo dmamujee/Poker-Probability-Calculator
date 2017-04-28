@@ -48,3 +48,6 @@ onePairvOnePair1
 onePairvOnePair2
 onePairvOnePair3
 onePairvOnePair4
+twoPairvTwoPair1
+twoPairvTwoPair2
+twoPairvTwoPair3

@@ -486,7 +486,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		int count = 0;
 
 		for (int i = 6; i >= 0; i--){
-			if (hand1AllCards[i]->getValue() == hand1Pair) continue;
+			if (hand1AllCards[i]->getValue() == hand1Pair && hand2AllCards[i]->getValue() == hand2Pair) continue;
 			if (hand1AllCards[i]->getValue() > hand2AllCards[i]->getValue()) return 1;
 			if (hand1AllCards[i]->getValue() < hand2AllCards[i]->getValue()) return 2;
 			count++;
@@ -494,6 +494,55 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		}
 
 		return -2;
+	}
+
+	//IN PROGRESS
+	if (hand1Ranking == TWO_PAIR){
+		int hand1Pair1 = 0;
+		int hand1Pair2 = 0;
+		int hand2Pair1 = 0;
+		int hand2Pair2 = 0;
+
+		bool foundPair1 = false;
+		bool foundPair2 = false;
+		for (int i = 0; i < 6; i++){
+				if (hand1AllCards[i]->getValue() == hand1AllCards[i+1]->getValue()){
+					if (!foundPair1){ 
+						foundPair1 = true;
+						hand1Pair2 = hand1AllCards[i]->getValue();
+					}
+					else hand1Pair1 = hand1AllCards[i]->getValue();;
+				}
+		}
+
+		for (int i = 0; i < 6; i++){
+				if (hand2AllCards[i]->getValue() == hand2AllCards[i+1]->getValue()){
+					if (!foundPair2){ 
+						foundPair2 = true;
+						hand2Pair2 = hand2AllCards[i]->getValue();
+					}
+					else hand2Pair1 = hand2AllCards[i]->getValue();;
+				}
+		}
+
+
+		if (hand1Pair1 > hand2Pair1) return 1;
+		else if (hand1Pair1 < hand2Pair1) return 2;
+		else if (hand1Pair2 > hand2Pair2) return 1;
+		else if (hand1Pair2 < hand2Pair2) return 2;
+
+		int hand1Kicker = 0;
+		int hand2Kicker = 0;
+		for (int i = 0; i < 5; i++){
+			if (hand1AllCards[i]->getValue() != hand1Pair1 && 
+				hand1AllCards[i]->getValue() != hand1Pair2) hand1Kicker = hand1AllCards[i]->getValue();
+			if (hand2AllCards[i]->getValue() != hand2Pair1 && 
+				hand2AllCards[i]->getValue() != hand2Pair2) hand2Kicker = hand2AllCards[i]->getValue();
+		}
+		if (hand1Kicker > hand2Kicker) return 1;
+		else if (hand1Kicker < hand2Kicker) return 2;
+		else return 0;
+
 	}
 
 	if (hand1Ranking == FLUSH){
