@@ -2,7 +2,7 @@
 # David Mamujee
 
 CC = g++
-CXXFLAGS = -Wall -g -MMD #-DDEBUG
+CXXFLAGS = -Wall -g -MMD -DDEBUG1 #-DDEBUG
 
 OBJS = card.o game.o
 DEPENDS = $(OBJS:.o=.d)

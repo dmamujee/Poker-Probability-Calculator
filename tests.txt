@@ -51,3 +51,6 @@ onePairvOnePair4
 twoPairvTwoPair1
 twoPairvTwoPair2
 twoPairvTwoPair3
+triplevTriple1
+triplevTriple2
+triplevTriple3

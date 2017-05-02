@@ -533,7 +533,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 		int hand1Kicker = 0;
 		int hand2Kicker = 0;
-		for (int i = 0; i < 5; i++){
+		for (int i = 6; i > 1; i--){
 			if (hand1AllCards[i]->getValue() != hand1Pair1 && 
 				hand1AllCards[i]->getValue() != hand1Pair2) hand1Kicker = hand1AllCards[i]->getValue();
 			if (hand2AllCards[i]->getValue() != hand2Pair1 && 
@@ -541,6 +541,53 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		}
 		if (hand1Kicker > hand2Kicker) return 1;
 		else if (hand1Kicker < hand2Kicker) return 2;
+		else return 0;
+
+	}
+
+	if (hand1Ranking == THREE_OF_A_KIND){
+
+		int hand1Triple = 0;
+		int hand2Triple = 0;
+
+		for (int i = 0; i < 5; i++){
+			if (hand1AllCards[i]->getValue() == hand1AllCards[i+1]->getValue()
+				&& hand1AllCards[i]->getValue() == hand1AllCards[i+2]->getValue()){
+				hand1Triple = hand1AllCards[i]->getValue();
+			} if (hand2AllCards[i]->getValue() == hand2AllCards[i+1]->getValue()
+				&& hand2AllCards[i]->getValue() == hand2AllCards[i+2]->getValue()){
+				hand2Triple = hand2AllCards[i]->getValue();
+			} if (hand1Triple != 0 && hand2Triple != 0) break;
+		}
+
+		if (hand1Triple > hand2Triple) return 1;
+		else if (hand1Triple < hand2Triple) return 2;
+
+		int hand1Kicker1 = 0;
+		int hand2Kicker1 = 0;
+		int hand1Kicker2 = 0;
+		int hand2Kicker2 = 0;
+
+
+		for (int i = 6; i > 1; i--){
+			if (hand1AllCards[i]->getValue() != hand1Triple && hand1Kicker1 == 0) {
+				hand1Kicker1 = hand1AllCards[i]->getValue();
+			} else if (hand1AllCards[i]->getValue() != hand1Triple && hand1Kicker2 == 0) {
+				hand1Kicker2 = hand1AllCards[i]->getValue();
+			}
+
+
+			if (hand2AllCards[i]->getValue() != hand2Triple && hand2Kicker1 == 0) {
+				hand2Kicker1 = hand2AllCards[i]->getValue();
+			} else if (hand2AllCards[i]->getValue() != hand2Triple && hand2Kicker2 == 0) {
+				hand2Kicker2 = hand2AllCards[i]->getValue();
+			}
+		}
+		
+		if (hand1Kicker1 > hand2Kicker1) return 1;
+		else if (hand1Kicker1 < hand2Kicker1) return 2;
+		else if (hand1Kicker2 > hand2Kicker2) return 1;
+		else if (hand1Kicker2 < hand2Kicker2) return 2;
 		else return 0;
 
 	}
