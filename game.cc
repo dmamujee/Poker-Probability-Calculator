@@ -582,12 +582,102 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 			} else if (hand2AllCards[i]->getValue() != hand2Triple && hand2Kicker2 == 0) {
 				hand2Kicker2 = hand2AllCards[i]->getValue();
 			}
+
+			if (hand1Kicker2 != 0 && hand2Kicker2 != 0) break;
 		}
-		
+
 		if (hand1Kicker1 > hand2Kicker1) return 1;
 		else if (hand1Kicker1 < hand2Kicker1) return 2;
 		else if (hand1Kicker2 > hand2Kicker2) return 1;
 		else if (hand1Kicker2 < hand2Kicker2) return 2;
+		else return 0;
+
+	}
+
+	if (hand1Ranking == STRAIGHT){
+		int hand1, hand2;
+		for (int i = 6; i > 1; i--){
+			int loc = i;
+			int card1 = hand1AllCards[loc--]->getValue();
+			int card2 = hand1AllCards[loc--]->getValue();
+			while (card2 == card1){
+				if (loc < 0){
+					cout << "ERROR: game.cc: hand1Ranking()" << endl;
+				}
+				card2 = hand1AllCards[loc--]->getValue();
+			}
+
+			int card3 = hand1AllCards[loc--]->getValue();
+			while (card2 == card3){
+				if (loc < 0){
+					cout << "ERROR: game.cc: hand1Ranking()" << endl;
+				}
+				card3 = hand1AllCards[loc--]->getValue();
+			}
+			bool temp = ( (card1 == (card2+1)) && (card2 == (card3+1)) );
+			if (temp){
+				hand1 = card1;
+				break;
+			}
+		}
+
+		for (int i = 6; i > 1; i--){
+			int loc = i;
+			int card1 = hand2AllCards[loc--]->getValue();
+			int card2 = hand2AllCards[loc--]->getValue();
+			while (card2 == card1){
+				if (loc < 0){
+					cout << "ERROR: game.cc: hand1Ranking()" << endl;
+				}
+				card2 = hand2AllCards[loc--]->getValue();
+			}
+
+			int card3 = hand2AllCards[loc--]->getValue();
+			while (card2 == card3){
+				if (loc < 0){
+					cout << "ERROR: game.cc: hand1Ranking()" << endl;
+				}
+				card3 = hand2AllCards[loc--]->getValue();
+			}
+			bool temp = ( (card1 == (card2+1)) && (card2 == (card3+1)) );
+			if (temp){
+				hand2 = card1;
+				break;
+			}
+		}
+
+		if (hand1 == 14){
+			bool foundKing = false;
+			bool foundQueen = false;
+			bool foundJack = false;
+			for (int i = 5; i > 1; i--){
+				if (hand1AllCards[i]->getValue() == 13) foundKing = true;
+				if (hand1AllCards[i]->getValue() == 12) foundQueen = true;
+				if (hand1AllCards[i]->getValue() == 11){
+					foundJack = true;
+					break;
+				}
+			}
+			if (!foundKing || !foundQueen || !foundJack) hand1 = 1;
+		}
+
+		if (hand2 == 14){
+			bool foundKing = false;
+			bool foundQueen = false;
+			bool foundJack = false;
+			for (int i = 5; i > 1; i--){
+				if (hand2AllCards[i]->getValue() == 13) foundKing = true;
+				if (hand1AllCards[i]->getValue() == 12) foundQueen = true;
+				if (hand1AllCards[i]->getValue() == 11){
+					foundJack = true;
+					break;
+				}
+			}
+			if (!foundKing || !foundQueen || !foundJack) hand2 = 5;
+		}
+
+		if (hand1 > hand2) return 1;
+		else if (hand1 < hand2) return 2;
 		else return 0;
 
 	}

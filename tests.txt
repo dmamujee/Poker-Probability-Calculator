@@ -36,6 +36,7 @@ highCard1
 highCard2
 highCard3
 straightWheel
+straightWheel1
 
 pairVhigh1
 highvHigh1
@@ -54,3 +55,8 @@ twoPairvTwoPair3
 triplevTriple1
 triplevTriple2
 triplevTriple3
+straightvStraight1
+straightvStraight2
+straightvStraight3
+straightvStraight4
+straightvStraight5
