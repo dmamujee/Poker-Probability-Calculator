@@ -1,1 +1,5 @@
+
+ERROR: game.cc: Given hand is same card as communal card
+Card0: 6 of Hearts
+Card1: 6 of Hearts
 Hand Ranking: Invalid

@@ -1,1 +1,5 @@
+
+ERROR: game.cc: Given hand is same card as communal card
+Card1: Queen of Spades
+Card5: Queen of Spades
 Hand Ranking: Invalid

@@ -268,9 +268,7 @@ int Game::handRanking(Hand* hand){
 	// Checks that all Communal Cards have come out
 	for (int i = 0; i < 5; i++){
 		if (communalCards[i] == NULL) {
-			#ifdef DEBUG
-				cout << endl << "ERROR: game.cc: Game::handRanking(): Communal Card is NULL" << endl;
-			#endif
+			cout << endl << "ERROR: game.cc: Game::handRanking(): Communal Card is NULL" << endl;
 
 			return -1;
 		}
@@ -284,11 +282,9 @@ int Game::handRanking(Hand* hand){
 	for (int i = 0; i < 7; i++){
 		for (int j = 0; j < 7; j++){
 			if ( (i != j) && (allCards[i] == allCards[j]) ) {
-				#ifdef DEBUG
-					cout << endl << "ERROR: game.cc: Given hand is same card as communal card" << endl;
-					cout << "Card" << i << ": " << allCards[i] << endl;
-					cout << "Card" << j << ": " << allCards[j] << endl;
-				#endif
+				cout << endl << "ERROR: game.cc: Given hand is same card as communal card" << endl;
+				cout << "Card" << i << ": " << allCards[i] << endl;
+				cout << "Card" << j << ": " << allCards[j] << endl;
 
 				return INVALID;
 			}
@@ -727,6 +723,42 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 		}
 		return 0;
+
+	}
+
+
+	if (hand1Ranking == FULL_HOUSE){
+		int hand1pair = 0;
+		int hand2pair = 0;
+		int hand1trip = 0;
+		int hand2trip = 0;
+		for (int i = 6; i > 1; i--){
+			if (hand1AllCards[i]->getValue() == hand1AllCards[i-2]->getValue()){
+				hand1trip = hand1AllCards[i]->getValue();
+				i = i-2;
+			} else if (hand1AllCards[i]->getValue() == hand1AllCards[i-1]->getValue() 
+				&& hand1AllCards[i]->getValue() != hand1trip ){
+				hand1pair = hand1AllCards[i]->getValue();
+			}
+
+		}
+
+		for (int i = 6; i > 1; i--){
+			if (hand2AllCards[i]->getValue() == hand2AllCards[i-2]->getValue()){
+				hand2trip = hand2AllCards[i]->getValue();
+				i = i-2;
+			} else if (hand2AllCards[i]->getValue() == hand2AllCards[i-1]->getValue() 
+				&& hand2AllCards[i]->getValue() != hand2trip ){
+				hand2pair = hand2AllCards[i]->getValue();
+			}
+
+		}
+
+		if (hand1trip > hand2trip) return 1;
+		else if (hand1trip < hand2trip) return 2;
+		else if (hand1pair > hand2pair) return 1;
+		else if (hand1pair < hand2pair) return 2;
+		else return 0;
 
 	}
 
