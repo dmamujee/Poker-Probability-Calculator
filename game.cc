@@ -111,11 +111,8 @@ bool Game::isQuads(Card *allCards[7]){
 	//Since we know that the Cards will be sorted, we just need to go 4 cards
 	//after each card to check if there are 4 of the same kind
 	for (int i = 0; i < 4; i++){
-		for (int j = i+1; j < i+4; j++){
-			//If 2 cards match, don't match then break
-			if ( allCards[i]->getValue() != allCards[j]->getValue() ) break;
-			else if (j == i+3) return true;
-		}
+
+		if (allCards[i]->getValue() == allCards[i+3]->getValue() ) return true;
 	}
 
 	return false;
@@ -462,7 +459,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		return 0;
 	}
 
-	if (hand1Ranking == ONE_PAIR){
+	else if (hand1Ranking == ONE_PAIR){
 		int hand1Pair = 0;
 		int hand2Pair = 0;
 
@@ -490,10 +487,10 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		}
 
 		return -2;
+	
 	}
 
-	//IN PROGRESS
-	if (hand1Ranking == TWO_PAIR){
+	else if (hand1Ranking == TWO_PAIR){
 		int hand1Pair1 = 0;
 		int hand1Pair2 = 0;
 		int hand2Pair1 = 0;
@@ -541,7 +538,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 	}
 
-	if (hand1Ranking == THREE_OF_A_KIND){
+	else if (hand1Ranking == THREE_OF_A_KIND){
 
 		int hand1Triple = 0;
 		int hand2Triple = 0;
@@ -590,7 +587,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 	}
 
-	if (hand1Ranking == STRAIGHT){
+	else if (hand1Ranking == STRAIGHT){
 		int hand1, hand2;
 		for (int i = 6; i > 1; i--){
 			int loc = i;
@@ -678,7 +675,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 	}
 
-	if (hand1Ranking == FLUSH){
+	else if (hand1Ranking == FLUSH){
 		Card* hand1Flush[5];
 		Card* hand2Flush[5];
 
@@ -726,8 +723,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 	}
 
-
-	if (hand1Ranking == FULL_HOUSE){
+	else if (hand1Ranking == FULL_HOUSE){
 		int hand1pair = 0;
 		int hand2pair = 0;
 		int hand1trip = 0;
@@ -741,6 +737,8 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 				hand1pair = hand1AllCards[i]->getValue();
 			}
 
+			if (hand1trip != 0 && hand1pair != 0) break;
+
 		}
 
 		for (int i = 6; i > 1; i--){
@@ -752,6 +750,8 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 				hand2pair = hand2AllCards[i]->getValue();
 			}
 
+			if (hand2trip != 0 && hand2pair != 0) break;
+
 		}
 
 		if (hand1trip > hand2trip) return 1;
@@ -759,6 +759,51 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		else if (hand1pair > hand2pair) return 1;
 		else if (hand1pair < hand2pair) return 2;
 		else return 0;
+
+	}
+
+	else if (hand1Ranking == FOUR_OF_KIND){
+		int hand1 = 0;
+		int hand2 = 0;
+
+		for (int i = 0; i < 4; i++){
+			if ( hand1AllCards[i]->getValue() == hand1AllCards[i+3]->getValue() ){
+				hand1 = hand1AllCards[i]->getValue();
+				break;
+			}
+		}
+
+		for (int i = 0; i < 4; i++){
+			if ( hand2AllCards[i]->getValue() == hand2AllCards[i+3]->getValue() ){
+				hand2 = hand2AllCards[i]->getValue();
+				break;
+			}
+		}
+
+		if (hand1 > hand2) return 1;
+		else if (hand1 < hand2) return 2;
+
+		int hand1Kicker = 0;
+		int hand2Kicker = 0;
+
+		for (int i = 6; i > 1; i--){
+			if (hand1AllCards[i]->getValue() != hand1){
+				hand1Kicker = hand1AllCards[i]->getValue();
+				break;
+			}
+		}
+
+		for (int i = 6; i > 1; i--){
+			if (hand2AllCards[i]->getValue() != hand2){
+				hand2Kicker = hand2AllCards[i]->getValue();
+				break;
+			}
+		}
+
+		if (hand1Kicker > hand2Kicker) return 1;
+		else if (hand1Kicker < hand2Kicker) return 2;
+		else return 0;
+
 
 	}
 
