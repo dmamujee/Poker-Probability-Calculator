@@ -166,51 +166,119 @@ bool Game::isOnePair(Card *allCards[7]){
 	else return false;
 }
 
+
 bool Game::isStraightFlush(Card *allCards[7]){
-	int cardsInStraight = 0;
-	for(int location = 0; location < 6; location++){		
-		if( (location - cardsInStraight) > 4 ) return false;
 
-		//If the next card is the same value, or if the next card is one value higher but different suit
-		if (allCards[location]->getValue() == allCards[location+1]->getValue()
-		|| (allCards[location]->getValue()+1 == allCards[location+1]->getValue() 
-				&& allCards[location]->getSuit() != allCards[location+1]->getSuit() ) ) {
+	int suitCards = 0;
+	Card* allCardsSuit[7];
+	int suit = 0;
 
-			if (location == 5) return false;
+	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
+	//Check if the 7 cards are suited for each suit
+	for (int i = 0; i < 4; i++){
+		int counter = 0;
+		for (int j = 0; j < 7; j++){
+			if (allCards[j]->getSuit() == Suits[i]) counter++;
 
-			else if (allCards[location]->getValue() == (allCards[location+2]->getValue() - 1)
-				&& allCards[location]->getSuit() == allCards[location+2]->getSuit() ){
-
-				location++;
-				cardsInStraight++;
-			}
-
-			else if (location == 4) return false;
-
-			else if (allCards[location]->getValue() == (allCards[location+3]->getValue() - 1)
-				&& allCards[location]->getSuit() == allCards[location+3]->getSuit() ){
-				location = location + 2;
-				cardsInStraight++;
-			}
-
-			else {
-				cardsInStraight = 0;
-			}
-
-
+			//If this case is true, then it is impossible for the cards to be suited, so break loop
+			if ( (j - counter) >= 2 ) break;
+		}
+		//If there are 5 cards of the same suit, then store what suit that is, and break loop
+		if (counter >= 5) {
+			suit = Suits[i];
+			break;
 		}
 
-		else if ( (allCards[location]->getValue() + 1) == allCards[location+1]->getValue() 
-			&& (allCards[location]->getSuit() == allCards[location+1]->getSuit() ) )  {
+	}
+
+	if (suit == 0) return false;
+
+	for (int i = 0; i < 7; i++){
+		if (allCards[i]->getSuit() == suit){
+			allCardsSuit[suitCards] = allCards[i];
+			suitCards++;
+		}
+	}
+
+	if (suitCards < 5) cout << "ERROR: game.cc: isStraightFlush()";
+
+	int cardsInStraight = 0;
+
+	for(int location = 0; location < suitCards-1; location++){	
+
+		//Finds wheel straights, by check if for an ace when finding a 2
+		if (allCardsSuit[location]->getValue() == 2 && allCardsSuit[suitCards-1]->getValue() == 14){
+
+			for (int i = 0; i < 3; i++){
+				if (allCardsSuit[6-i]->getValue() == 14){
+					if (allCardsSuit[6-i]->getSuit() == allCardsSuit[location]->getSuit()){
+						cardsInStraight++;
+						break;
+					}
+				}
+			}
+		}
+
+		if ( (allCardsSuit[location]->getValue() + 1) == allCardsSuit[location+1]->getValue() 
+			&& allCardsSuit[location]->getSuit() == allCardsSuit[location+1]->getSuit() ){
 			cardsInStraight++;
 		}
-
-		else {
-			cardsInStraight = 0;				
-		} 
-
+		else cardsInStraight = 0;
 		if (cardsInStraight == 4) return true;
 	}
+	
+
+
+
+	// for(int location = 0; location < 6; location++){		
+	// 	if( (location - cardsInStraight) > 4 ) return false;
+
+	// 	//If the next card is the same value, or if the next card is one value higher but different suit
+	// 	if (allCards[location]->getValue() == allCards[location+1]->getValue()
+	// 	|| (allCards[location]->getValue()+1 == allCards[location+1]->getValue() 
+	// 			&& allCards[location]->getSuit() != allCards[location+1]->getSuit() ) ) {
+
+	// 		if (location == 5) return false;
+
+	// 		else if (allCards[location]->getValue() == (allCards[location+2]->getValue() - 1)
+	// 			&& allCards[location]->getSuit() == allCards[location+2]->getSuit() ){
+
+	// 			location++;
+	// 			cardsInStraight++;
+	// 		}
+
+	// 		else if (location == 4) return false;
+
+	// 		else if (allCards[location]->getValue() == (allCards[location+3]->getValue() - 1)
+	// 			&& allCards[location]->getSuit() == allCards[location+3]->getSuit() ){
+	// 			location = location + 2;
+	// 			cardsInStraight++;
+	// 		}
+
+	// 		else {
+	// 			cardsInStraight = 0;
+	// 		}
+
+
+	// 	}
+
+	// 	else if ( (allCards[location]->getValue() + 1) == allCards[location+1]->getValue() 
+	// 		&& (allCards[location]->getSuit() == allCards[location+1]->getSuit() ) )  {
+	// 		cardsInStraight++;
+	// 	}
+
+	// 	else {
+	// 		cardsInStraight = 0;				
+	// 	} 
+
+	// 	if (cardsInStraight == 4) return true;
+	// }
+
+
+	
+
+
+
 
 	return false;
 }
@@ -802,6 +870,101 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 		if (hand1Kicker > hand2Kicker) return 1;
 		else if (hand1Kicker < hand2Kicker) return 2;
+		else return 0;
+
+	}
+
+	else if (hand1Ranking == STRAIGHT_FLUSH){
+
+		int hand1, hand2;
+		int suit1, suit2;
+		for (int i = 6; i > 1; i--){
+			int loc = i;
+			Card* card1 = hand1AllCards[loc--];
+			Card* card2 = hand1AllCards[loc--];
+			while (card2->getValue() == card1->getValue() && card1->getSuit() != card2->getSuit() ){
+				if (loc < 0){
+					cout << "ERROR: game.cc: handRanking()" << endl;
+				}
+				card2 = hand1AllCards[loc--];
+			}
+
+			Card* card3 = hand1AllCards[loc--];
+			while (card2->getValue() == card3->getValue() && card3->getSuit() != card2->getSuit()){
+				if (loc < 0){
+					cout << "ERROR: game.cc: handRanking()" << endl;
+				}
+				card3 = hand1AllCards[loc--];
+			}
+			bool temp = ( (card1->getValue() == (card2->getValue()+1)) && (card2->getValue() == (card3->getValue()+1)) );
+			if (temp){
+				hand1 = card1->getValue();
+				suit1 = card1->getSuit();
+				break;
+			}
+		}
+
+
+		if (hand1 == 14){
+			bool foundKing = false;
+			bool foundQueen = false;
+			bool foundJack = false;
+			for (int i = 5; i > 1; i--){
+				if (hand1AllCards[i]->getValue() == 13 && hand1AllCards[i]->getSuit() == suit1) foundKing = true;
+				if (hand1AllCards[i]->getValue() == 12 && hand1AllCards[i]->getSuit() == suit1) foundQueen = true;
+				if (hand1AllCards[i]->getValue() == 11 && hand1AllCards[i]->getSuit() == suit1){
+					foundJack = true;
+					break;
+				}
+			}
+			if (!foundKing || !foundQueen || !foundJack) hand1 = 1;
+		}
+
+
+		for (int i = 6; i > 1; i--){
+			int loc = i;
+			Card* card1 = hand2AllCards[loc--];
+			Card* card2 = hand2AllCards[loc--];
+			while (card2->getValue() == card1->getValue() && card1->getSuit() != card2->getSuit() ){
+				if (loc < 0){
+					cout << "ERROR: game.cc: handRanking()" << endl;
+				}
+				card2 = hand2AllCards[loc--];
+			}
+
+			Card* card3 = hand2AllCards[loc--];
+			while (card2->getValue() == card3->getValue() && card3->getSuit() != card2->getSuit()){
+				if (loc < 0){
+					cout << "ERROR: game.cc: handRanking()" << endl;
+				}
+				card3 = hand2AllCards[loc--];
+			}
+			bool temp = ( (card1->getValue() == (card2->getValue()+1)) && (card2->getValue() == (card3->getValue()+1)) );
+			if (temp){
+				hand2 = card1->getValue();
+				suit2 = card1->getSuit();
+				break;
+			}
+		}
+
+
+		if (hand2 == 14){
+			bool foundKing = false;
+			bool foundQueen = false;
+			bool foundJack = false;
+			for (int i = 5; i > 1; i--){
+				if (hand2AllCards[i]->getValue() == 13 && hand2AllCards[i]->getSuit() == suit2) foundKing = true;
+				if (hand2AllCards[i]->getValue() == 12 && hand2AllCards[i]->getSuit() == suit2) foundQueen = true;
+				if (hand2AllCards[i]->getValue() == 11 && hand2AllCards[i]->getSuit() == suit2){
+					foundJack = true;
+					break;
+				}
+			}
+			if (!foundKing || !foundQueen || !foundJack) hand2 = 1;
+		}
+
+		if ( hand1 > hand2) return 1;
+		else if (hand1 < hand2) return 2;
 		else return 0;
 
 
