@@ -9,7 +9,6 @@ ostream& operator<<(ostream& os, Card* card);
 //TODO: in main(), have main keep intaking input until EOF
 
 int main(int argc, char *argv[]){
-	cout << "hi";
 	Game* game = new Game();
 	Hand* hand[10];
 
@@ -60,12 +59,13 @@ int main(int argc, char *argv[]){
 		while (true){
 			cin >> handPoint;
 			if (handPoint == "Preflop" || handPoint == "preflop"){
+				handPoint = "preflop";
 				break;
-			} else if (handPoint == "flop" || handPoint == "flop"){
-				cout << "hi2" << endl;
+			} else if (handPoint == "Flop" || handPoint == "flop"){
+				handPoint = "flop";
 				break;
-			} else if (handPoint == "turn" || handPoint == "turn"){
-				cout << "hi2" << endl;
+			} else if (handPoint == "Turn" || handPoint == "turn"){
+				handPoint = "turn";
 				break;
 			} else {
 				cout << "Invalid input. Please enter one of the following 3 options: [Preflop, Flop, Turn]" << endl;
@@ -121,17 +121,66 @@ int main(int argc, char *argv[]){
 
 			Card* card1 = game->getCard(card1value, suitInt1);
 			Card* card2 = game->getCard(card2value, suitInt2);
-			hand[i]->setCard(0, card1);
-			hand[i]->setCard(1, card2);
-
-
+			hand[i-1]->setCard(0, card1);
+			hand[i-1]->setCard(1, card2);
 		}
 
+		int hand1Wins = 0;
+		int hand2Wins = 0;
+		int ties = 0;
+		if (handPoint == "turn"){
+			cout << "Please enter 4 cards on the board: " << endl;
+			while(true){
+				int value, suitInt;
+				char suit;
+				for (int i = 0; i < 4; i++){
+					cin >> value >> suit;
 
+					if (value < 2 || value > 14){
+						cout << "ERROR" << endl;
+						return 0;
+					}
 
+					if (suit == 'S') suitInt = SPADE;
+					else if (suit == 'H') suitInt = HEART;
+					else if (suit == 'D') suitInt = DIAMOND;
+					else if (suit == 'C') suitInt = CLUB;
+					else{
+						cout << "ERROR" << endl;
+						return 0;
+					}
 
+					game->updateSingleCommunal(game->getCard(value, suitInt),i);
 
+				}
+				break;
+			}
 
+			for (int suit = CLUB; suit <= SPADE; suit++){
+				for (int value = 2; value <= 14; value++){
+					game->updateSingleCommunal(game->getCard(value, suit),4);
+					int result = game->handComparison(hand[0],hand[1]);
+					if (result == -2) continue;
+					else if (result == 1) hand1Wins++;
+					else if (result == 2) hand2Wins++;
+					else if (result == 0) {
+						ties++;
+						game->printCommunal();
+					}
+					else {
+						cout << "ERROR: main(): unpredictced response" << endl;
+						return 0;
+					}
+
+ 
+				}
+			}
+		}
+
+		cout << "hand1Wins: " << hand1Wins << endl;
+		cout << "hand2Wins: " << hand2Wins << endl;
+		cout << "ties: " << ties << endl;
+		cout << "Total: " << (hand1Wins + hand2Wins + ties) << endl;
 
 
 	} else if ( strcmp(argv[1], "ranking") == 0 ){

@@ -3,8 +3,7 @@
 #include <sstream>
 using namespace std;
 
-ostream& operator<<(ostream& os, Card* card)
-	{
+ostream& operator<<(ostream& os, Card* card) {
 		string suitOutput = "";
 		int suit = card->getSuit();
 		if (suit == SPADE) suitOutput = "Spades";
@@ -27,7 +26,7 @@ ostream& operator<<(ostream& os, Card* card)
 
 	    os << " of " << suitOutput;
 	    return os;
-	}
+}
 
 
 Game::Game(){
@@ -83,7 +82,14 @@ void Game::updateCommunal(Card *newCommunalCards[5]){
 void Game::updateSingleCommunal(Card* newCard, int location){
 	if (location < 0 || location > 4) return;
 	communalCards[location] = newCard;
+}
+
+void Game::printCommunal(){
+	for (int i = 0; i < 5; i++){
+		cout << communalCards[i] << "; ";
 	}
+	cout << endl;
+}
 
 bool Game::isFlush(Card *allCards[7]){
 	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
@@ -165,7 +171,6 @@ bool Game::isOnePair(Card *allCards[7]){
 	if (foundPair) return true;
 	else return false;
 }
-
 
 bool Game::isStraightFlush(Card *allCards[7]){
 
@@ -262,7 +267,6 @@ bool Game::isFullHouse(Card *allCards[7]){
 	}
 
 	return false;
-
 }
 
 string Game::rankToString(int rank){
@@ -281,7 +285,7 @@ int Game::handRanking(Hand* hand){
 	// Checks that all Communal Cards have come out
 	for (int i = 0; i < 5; i++){
 		if (communalCards[i] == NULL) {
-			cout << endl << "ERROR: game.cc: Game::handRanking(): Communal Card is NULL" << endl;
+			cout << endl << "ERROR: game.cc: Game::handRanking(): Communal Card " << i << " is NULL" << endl;
 
 			return -1;
 		}
@@ -295,9 +299,11 @@ int Game::handRanking(Hand* hand){
 	for (int i = 0; i < 7; i++){
 		for (int j = 0; j < 7; j++){
 			if ( (i != j) && (allCards[i] == allCards[j]) ) {
-				cout << endl << "ERROR: game.cc: Given hand is same card as communal card" << endl;
+				#ifdef DEBUG
+				cout << endl << "ERROR: game.cc: Given hand is same card as communal card " << i << endl;
 				cout << "Card" << i << ": " << allCards[i] << endl;
 				cout << "Card" << j << ": " << allCards[j] << endl;
+				#endif
 
 				return INVALID;
 			}
@@ -386,6 +392,7 @@ Ouput:
 2 = Hand 2 wins
 0 = tie
 -1 = ERROR
+-2 = INVALID
 
 */
 
@@ -406,6 +413,8 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 
 	int hand1Ranking = handRanking(hand1);
 	int hand2Ranking = handRanking(hand2);
+
+	if (hand1Ranking == INVALID || hand2Ranking == INVALID ) return -2;
 
 	if (hand1Ranking < hand2Ranking) return 1;
 	else if (hand1Ranking > hand2Ranking) return 2;
@@ -749,7 +758,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 				hand1trip = hand1AllCards[i]->getValue();
 				i = i-2;
 			} else if (hand1AllCards[i]->getValue() == hand1AllCards[i-1]->getValue() 
-				&& hand1AllCards[i]->getValue() != hand1trip ){
+				&& hand1AllCards[i]->getValue() != hand1trip && hand1pair == 0){
 				hand1pair = hand1AllCards[i]->getValue();
 			}
 
@@ -762,7 +771,7 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 				hand2trip = hand2AllCards[i]->getValue();
 				i = i-2;
 			} else if (hand2AllCards[i]->getValue() == hand2AllCards[i-1]->getValue() 
-				&& hand2AllCards[i]->getValue() != hand2trip ){
+				&& hand2AllCards[i]->getValue() != hand2trip && hand2pair == 0){
 				hand2pair = hand2AllCards[i]->getValue();
 			}
 

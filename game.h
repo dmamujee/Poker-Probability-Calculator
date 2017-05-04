@@ -24,6 +24,7 @@ public:
 	void clearGame();
 	void updateCommunal(Card *newCommunalCards[5]);
 	void updateSingleCommunal(Card* newCard, int location);
+	void printCommunal();
 	bool isFlush(Card *allCards[7]);
 	bool isQuads(Card *allCards[7]);
 	bool isStraight(Card *allCards[7]);
