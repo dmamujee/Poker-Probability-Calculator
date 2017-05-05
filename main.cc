@@ -128,6 +128,7 @@ int main(int argc, char *argv[]){
 		int hand1Wins = 0;
 		int hand2Wins = 0;
 		int ties = 0;
+		int total = 0;
 		if (handPoint == "turn"){
 			cout << "Please enter 4 cards on the board: " << endl;
 			while(true){
@@ -177,10 +178,16 @@ int main(int argc, char *argv[]){
 			}
 		}
 
+		total = (hand1Wins + hand2Wins + ties);
 		cout << "hand1Wins: " << hand1Wins << endl;
 		cout << "hand2Wins: " << hand2Wins << endl;
 		cout << "ties: " << ties << endl;
-		cout << "Total: " << (hand1Wins + hand2Wins + ties) << endl;
+		cout << "Total: " << total << endl;
+		float hand1percent = 100*(float)(hand1Wins + (float)(ties/2) ) /total;
+		float hand2percent = 100*(float)(hand2Wins + (float)(ties/2) ) /total;
+
+		cout << "Hand 1 wins " << hand1percent << "% of the time" << endl;
+		cout << "Hand 2 wins " << hand2percent << "% of the time" << endl;
 
 
 	} else if ( strcmp(argv[1], "ranking") == 0 ){
