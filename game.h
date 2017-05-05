@@ -35,6 +35,7 @@ public:
 	bool isFullHouse(Card *allCards[7]);
 	string rankToString(int rank);
 	Card* getCard(int value, int suit);
+	Card* getCard(int value);
 
 	// If all communal Cards have come out, then determines the ranking of the hand
 	int handRanking(Hand* hand);

@@ -73,6 +73,12 @@ Card* Game::getCard(int value, int suit){
 	return deckOfCards[suit-CLUB][value-2];
 }
 
+// input between 0 and 51
+Card* Game::getCard(int value){
+	if (value < 0 || value > 51) return NULL;
+	return deckOfCards[value/13][value%13];
+}
+
 void Game::updateCommunal(Card *newCommunalCards[5]){
 	for (int i = 0; i < 5; i++){
 		communalCards[i] = newCommunalCards[i];
@@ -110,7 +116,6 @@ bool Game::isFlush(Card *allCards[7]){
 	}
 
 	return false;
-
 }
 
 bool Game::isQuads(Card *allCards[7]){
@@ -213,15 +218,7 @@ bool Game::isStraightFlush(Card *allCards[7]){
 
 		//Finds wheel straights, by check if for an ace when finding a 2
 		if (allCardsSuit[location]->getValue() == 2 && allCardsSuit[suitCards-1]->getValue() == 14){
-
-			for (int i = 0; i < 3; i++){
-				if (allCardsSuit[6-i]->getValue() == 14){
-					if (allCardsSuit[6-i]->getSuit() == allCardsSuit[location]->getSuit()){
-						cardsInStraight++;
-						break;
-					}
-				}
-			}
+			cardsInStraight++;
 		}
 
 		if ( (allCardsSuit[location]->getValue() + 1) == allCardsSuit[location+1]->getValue() 
@@ -929,6 +926,3 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 	cout << "ERROR: game.cc: handComparison(): should never reach this point" << endl;
 	return -1;
 }
-
-
-

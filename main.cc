@@ -157,24 +157,100 @@ int main(int argc, char *argv[]){
 				break;
 			}
 
-			for (int suit = CLUB; suit <= SPADE; suit++){
-				for (int value = 2; value <= 14; value++){
-					game->updateSingleCommunal(game->getCard(value, suit),4);
+			for (int i = 0; i < 52; i++){
+				game->updateSingleCommunal(game->getCard(i),4);
+				int result = game->handComparison(hand[0],hand[1]);
+				if (result == -2) continue;
+				else if (result == 1) hand1Wins++;
+				else if (result == 2) hand2Wins++;
+				else if (result == 0) {
+					ties++;
+				}
+				else {
+					cout << "ERROR: main(): unpredictced response (turn)" << endl;
+					return 0;
+				}
+
+			}
+		}
+		else if (handPoint == "flop"){
+			cout << "Please enter 3 cards on the board: " << endl;
+			int value, suitInt;
+			char suit;
+			for (int i = 0; i < 3; i++){
+				cin >> value >> suit;
+
+				if (value < 2 || value > 14){
+					cout << "ERROR" << endl;
+					return 0;
+				}
+
+				if (suit == 'S') suitInt = SPADE;
+				else if (suit == 'H') suitInt = HEART;
+				else if (suit == 'D') suitInt = DIAMOND;
+				else if (suit == 'C') suitInt = CLUB;
+				else{
+					cout << "ERROR" << endl;
+					return 0;
+				}
+
+				game->updateSingleCommunal(game->getCard(value, suitInt),i);
+
+			}
+
+			for (int i = 0; i < 52; i++){
+				game->updateSingleCommunal(game->getCard(i),3);
+				for (int j = 0; j < 52; j++){
+					if (i == j) continue;
+					game->updateSingleCommunal(game->getCard(j),4);
 					int result = game->handComparison(hand[0],hand[1]);
 					if (result == -2) continue;
 					else if (result == 1) hand1Wins++;
 					else if (result == 2) hand2Wins++;
 					else if (result == 0) {
 						ties++;
-						game->printCommunal();
 					}
 					else {
-						cout << "ERROR: main(): unpredictced response" << endl;
+						cout << "ERROR: main(): unpredictced response (flop)" << endl;
 						return 0;
 					}
 
- 
 				}
+			}
+
+		}
+		else if (handPoint == "preflop"){
+			for (int i = 0; i < 52; i++){
+				game->updateSingleCommunal(game->getCard(i),0);
+				for (int j = 0; j < 52; j++){
+					if(i == j) continue;
+					game->updateSingleCommunal(game->getCard(j),1);
+					for (int k = 0; k < 52; k++){
+						if (j == k || i == k) continue;
+						game->updateSingleCommunal(game->getCard(k),2);
+						for (int l = 0; l < 52; l++){
+							if (l == i || l == j || l == k) continue;
+							game->updateSingleCommunal(game->getCard(l),3);
+							for (int m = 0; m < 52; m++){
+								if (m == i || m == j || m == k || m == l) continue;
+								game->updateSingleCommunal(game->getCard(m),4);
+								int result = game->handComparison(hand[0],hand[1]);
+								if (result == -2) continue;
+								else if (result == 1) hand1Wins++;
+								else if (result == 2) hand2Wins++;
+								else if (result == 0) {
+									ties++;
+								}
+								else {
+									cout << "ERROR: main(): unpredictced response (preflop)" << endl;
+									return 0;
+								}
+
+							}
+						}
+					}
+				}
+				
 			}
 		}
 
