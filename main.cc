@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "game.h"
 #include "card.h"
 #include "string.h"
@@ -125,6 +126,10 @@ int main(int argc, char *argv[]){
 			hand[i-1]->setCard(1, card2);
 		}
 
+	#ifdef TIMER
+		int start = clock();
+	#endif
+
 		int hand1Wins = 0;
 		int hand2Wins = 0;
 		int ties = 0;
@@ -220,6 +225,7 @@ int main(int argc, char *argv[]){
 
 		}
 		else if (handPoint == "preflop"){
+			cout << "Calculating..." << endl;
 			for (int i = 0; i < 52; i++){
 				game->updateSingleCommunal(game->getCard(i),0);
 				for (int j = 0; j < 52; j++){
@@ -264,6 +270,11 @@ int main(int argc, char *argv[]){
 
 		cout << "Hand 1 wins " << hand1percent << "% of the time" << endl;
 		cout << "Hand 2 wins " << hand2percent << "% of the time" << endl;
+
+	#ifdef TIMER
+		double duration = ( clock() - (double)start ) / (double) CLOCKS_PER_SEC;
+		cout << "Calculation took: " << duration << " seconds" << endl;
+	#endif
 
 
 	} else if ( strcmp(argv[1], "ranking") == 0 ){
