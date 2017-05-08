@@ -33,6 +33,7 @@ public:
 	bool isStraightFlush(Card *allCards[7]);
 	bool isTwoPair(Card *allCards[7]);
 	bool isFullHouse(Card *allCards[7]);
+	bool isHighCard(Card *allCards[7]);
 	string rankToString(int rank);
 	Card* getCard(int value, int suit);
 	Card* getCard(int value);

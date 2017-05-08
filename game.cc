@@ -98,21 +98,14 @@ void Game::printCommunal(){
 }
 
 bool Game::isFlush(Card *allCards[7]){
-	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
-	//Check if the 7 cards are suited for each suit
+
+	int suitCounter[4] = {0,0,0,0};
+	for (int i = 0; i < 7; i++){
+		++suitCounter[allCards[i]->getSuit() - CLUB];
+	}
+
 	for (int i = 0; i < 4; i++){
-		int counter = 0;
-		for (int j = 0; j < 7; j++){
-			if (allCards[j]->getSuit() == Suits[i]) counter++;
-
-			//If this case is true, then it is impossible for the cards to be suited, so break loop
-			if ( (j - counter) >= 2 ) break;
-		}
-		//If there are 5 cards of the same suit, then store what suit that is, and break loop
-		if (counter >= 5) {
-			return true;
-		}
-
+		if (suitCounter[i] >= 5) return true;
 	}
 
 	return false;
@@ -155,8 +148,7 @@ bool Game::isStraight(Card *allCards[7]){
 
 bool Game::isTriple(Card *allCards[7]){
 	for (int i = 0; i < 5; i++){
-			if (allCards[i]->getValue() == allCards[i+1]->getValue()
-				&& allCards[i]->getValue() == allCards[i+2]->getValue()){
+			if (allCards[i]->getValue() == allCards[i+2]->getValue()){
 				return true;
 			}
 	}
@@ -183,22 +175,16 @@ bool Game::isStraightFlush(Card *allCards[7]){
 	Card* allCardsSuit[7];
 	int suit = 0;
 
-	int Suits[4] = {SPADE, HEART, DIAMOND, CLUB};
-	//Check if the 7 cards are suited for each suit
-	for (int i = 0; i < 4; i++){
-		int counter = 0;
-		for (int j = 0; j < 7; j++){
-			if (allCards[j]->getSuit() == Suits[i]) counter++;
+	int suitCounter[4] = {0,0,0,0};
+	for (int i = 0; i < 7; i++){
+		++suitCounter[allCards[i]->getSuit() - CLUB];
+	}
 
-			//If this case is true, then it is impossible for the cards to be suited, so break loop
-			if ( (j - counter) >= 2 ) break;
-		}
-		//If there are 5 cards of the same suit, then store what suit that is, and break loop
-		if (counter >= 5) {
-			suit = Suits[i];
+	for (int i = 0; i < 4; i++){
+		if (suitCounter[i] >= 5) {
+			suit = CLUB + i;
 			break;
 		}
-
 	}
 
 	if (suit == 0) return false;
@@ -264,6 +250,15 @@ bool Game::isFullHouse(Card *allCards[7]){
 	}
 
 	return false;
+}
+
+bool Game::isHighCard(Card *allCards[7]){
+	//Checks all cards values are unique
+
+	for (int i = 0; i < 6; i++){
+		if (allCards[i]->getValue() == allCards[i+1]->getValue()) return false;
+	}
+	return true;
 }
 
 string Game::rankToString(int rank){
@@ -344,8 +339,23 @@ int Game::handRanking(Hand* hand){
 
 	*/
 
-	//Check if Cards can create a straight flush
-	if (isStraightFlush(allCards)) return STRAIGHT_FLUSH;
+
+	//Check if Cards can create a Flush
+	if (isFlush(allCards)) {
+
+		//Check if Cards can create a straight flush
+		if (isStraightFlush(allCards)) return STRAIGHT_FLUSH;
+		else return FLUSH;
+	}
+
+	//Check if Cards can create a Straight
+	if (isStraight(allCards)) return STRAIGHT;
+
+	//Checks if all Cards are unique in value;
+	if (isHighCard(allCards)) return HIGH_CARD;
+
+	//Checks if Cards can create exactly one Pair;
+	if (isOnePair(allCards)) return ONE_PAIR;
 
 
 	//Check if Cards can create 4 of a Kind
@@ -354,13 +364,6 @@ int Game::handRanking(Hand* hand){
 
 	//Check if Cards can create a Full House
 	if (isFullHouse(allCards)) return FULL_HOUSE;
-
-	//Check if Cards can create a Flush
-	if (isFlush(allCards)) return FLUSH;
-
-
-	//Check if Cards can create a Straight
-	if (isStraight(allCards)) return STRAIGHT;
 
 
 	//Check if cards can create 3 of a Kind
@@ -371,12 +374,8 @@ int Game::handRanking(Hand* hand){
 	if (isTwoPair(allCards)) return TWO_PAIR;
 
 
-	//Checks if Cards cane create a Pair;
-	if (isOnePair(allCards)) return ONE_PAIR;
-
-
 	//Only possible hand left that the Cards could create is a High Card
-	else return HIGH_CARD;
+	else return -1;
 
 
 }
