@@ -1,5 +1,8 @@
 #include <iostream>
 #include <ctime>
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 #include "game.h"
 #include "card.h"
 #include "string.h"
@@ -226,41 +229,33 @@ int main(int argc, char *argv[]){
 		}
 		else if (handPoint == "preflop"){
 			cout << "Calculating..." << endl;
-			for (int i = 0; i < 52; i++){
-				game->updateSingleCommunal(game->getCard(i),0);
-				for (int j = 0; j < 52; j++){
-					if(i == j) continue;
-					game->updateSingleCommunal(game->getCard(j),1);
-					for (int k = 0; k < 52; k++){
-						if (j == k || i == k) continue;
-						game->updateSingleCommunal(game->getCard(k),2);
-						for (int l = 0; l < 52; l++){
-							if (l == i || l == j || l == k) continue;
-							game->updateSingleCommunal(game->getCard(l),3);
-							for (int m = 0; m < 52; m++){
-								if (m == i || m == j || m == k || m == l) continue;
-								game->updateSingleCommunal(game->getCard(m),4);
-								int result = game->handComparison(hand[0],hand[1]);
-								if (result == -2) continue;
-								else if (result == 1) hand1Wins++;
-								else if (result == 2) hand2Wins++;
-								else if (result == 0) {
-									ties++;
-								}
-								else {
-									cout << "ERROR: main(): unpredictced response (preflop)" << endl;
-									return 0;
-								}
 
-							}
-						}
-					}
+			srand(time(NULL));
+			while(total < 100000){
+				for (int i = 0; i < 5; i++) {
+					game->updateSingleCommunal(game->getCard( rand()%52 ),i);
 				}
+				int result = game->handComparison(hand[0],hand[1]);
+				if (result == -2) continue;
+				else if (result == 1) hand1Wins++;
+				else if (result == 2) hand2Wins++;
+				else if (result == 0) {
+					ties++;
+				}
+				else {
+					cout << "ERROR: main(): unpredictced response (preflop)" << endl;
+					return 0;
+				}
+				++total;
+
 				
 			}
+
+
+
 		}
 
-		total = (hand1Wins + hand2Wins + ties);
+		if (total == 0) total = (hand1Wins + hand2Wins + ties);
 		cout << "hand1Wins: " << hand1Wins << endl;
 		cout << "hand2Wins: " << hand2Wins << endl;
 		cout << "ties: " << ties << endl;
