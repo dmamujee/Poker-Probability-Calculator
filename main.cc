@@ -19,14 +19,14 @@ int main(int argc, char *argv[]){
 	for (int i = 0; i < 10; i++){
 		hand[i] = new Hand();
 	}
-	
+
 	//TODO Change this!!!!!
 	int cards;
 	if (argc == 1) cards = 0;
 	else if (strcmp(argv[1], "ranking") == 0) cards = 7;
 	else if (strcmp(argv[1], "comparison") == 0) cards = 9;
 	else cards = 0;
-	
+
 	//Get Cards from input
 	for (int i = 0; i < cards; i++){
 		int value,suitInt;
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]){
 		} else hand[(i-5)/2]->setCard( (i-1)%2 ,card);
 	}
 
-	
+
 	if (argc == 1){
 		cout << "Welcome to the No Limit Holdem Poker Calculator!" << endl;
 		cout << "Please enter which point of the hand you would like to calculate [Preflop, Flop, Turn]:" << endl;
@@ -248,7 +248,7 @@ int main(int argc, char *argv[]){
 				}
 				++total;
 
-				
+
 			}
 
 
