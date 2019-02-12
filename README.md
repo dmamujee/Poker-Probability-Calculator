@@ -1,5 +1,7 @@
 # Poker-Probability-Calculator
 
+ShortDeck Modification: Remove all face cards, 10 is highest card.
+
 A program that will calculate the odds of each hand winning a poker hand
 Start Date: December 23rd, 2015
 

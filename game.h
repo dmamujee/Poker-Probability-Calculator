@@ -9,7 +9,7 @@ using namespace std;
 class Game{
 
 	//Array of all the cards in the deck;
-	Card* deckOfCards[4][13];
+	Card* deckOfCards[4][9];
 	Card* hand1[2];
 	Card* hand2[2];
 

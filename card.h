@@ -1,16 +1,12 @@
 #ifndef CARD_H
 #define CARD_H
 
-const int ACE = 14;
-const int JACK = 11;
-const int QUEEN = 12;
-const int KING = 13;
 const int SPADE = 1004;
 const int HEART = 1003;
 const int DIAMOND = 1002;
 const int CLUB = 1001;
 
-// Card values go from 2 to 14
+// Card values go from 2 to 10
 
 
 const int STRAIGHT_FLUSH = 101;

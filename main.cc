@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
 			continue;
 		}
 
-		if (value < 2 || value > 14){
+		if (value < 2 || value > 0){
 			cout << endl << "ERROR: main.cc: main(): Invalid Value";
 			i--;
 			continue;
@@ -78,14 +78,14 @@ int main(int argc, char *argv[]){
 		}
 
 		for (int i = 1; i < 3; i++){
-			cout << "Please enter hand " << i << ", in the Format [5 H 7 D], which would represent the 5 of hearts and the 7 of diamonds (Note: 14 represents Ace): " << endl;
+			cout << "Please enter hand " << i << ", in the Format \"5 H 7 D\", which would represent the 5 of hearts and the 7 of diamonds (Note: 10 represents Ace): " << endl;
 			int card1value, card2value, suitInt1, suitInt2;
 			char card1suit, card2suit;
 			bool flag = true;
 			while(true){
 				cin >> card1value >> card1suit >> card2value >> card2suit;
-				if (card1value < 2 || card1value > 14 || card2value < 2 || card2value > 14){
-					cout << "Please enter a value between 2 and 14: " << endl;
+				if (card1value < 2 || card1value > 10 || card2value < 2 || card2value > 10){
+					cout << "Please enter a value between 2 and 10: " << endl;
 					continue;
 				} else if (card1suit == 'S'){
 					suitInt1 = SPADE;
@@ -145,7 +145,7 @@ int main(int argc, char *argv[]){
 				for (int i = 0; i < 4; i++){
 					cin >> value >> suit;
 
-					if (value < 2 || value > 14){
+					if (value < 2 || value > 10){
 						cout << "ERROR" << endl;
 						return 0;
 					}
@@ -165,7 +165,7 @@ int main(int argc, char *argv[]){
 				break;
 			}
 
-			for (int i = 0; i < 52; i++){
+			for (int i = 0; i < 36; i++){
 				game->updateSingleCommunal(game->getCard(i),4);
 				int result = game->handComparison(hand[0],hand[1]);
 				if (result == -2) continue;
@@ -188,7 +188,7 @@ int main(int argc, char *argv[]){
 			for (int i = 0; i < 3; i++){
 				cin >> value >> suit;
 
-				if (value < 2 || value > 14){
+				if (value < 2 || value > 10){
 					cout << "ERROR" << endl;
 					return 0;
 				}
@@ -206,9 +206,9 @@ int main(int argc, char *argv[]){
 
 			}
 
-			for (int i = 0; i < 52; i++){
+			for (int i = 0; i < 36; i++){
 				game->updateSingleCommunal(game->getCard(i),3);
-				for (int j = 0; j < 52; j++){
+				for (int j = 0; j < 36; j++){
 					if (i == j) continue;
 					game->updateSingleCommunal(game->getCard(j),4);
 					int result = game->handComparison(hand[0],hand[1]);
@@ -233,7 +233,7 @@ int main(int argc, char *argv[]){
 			srand(time(NULL));
 			while(total < 100000){
 				for (int i = 0; i < 5; i++) {
-					game->updateSingleCommunal(game->getCard( rand()%52 ),i);
+					game->updateSingleCommunal(game->getCard( rand()%36 ),i);
 				}
 				int result = game->handComparison(hand[0],hand[1]);
 				if (result == -2) continue;

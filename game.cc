@@ -13,18 +13,7 @@ ostream& operator<<(ostream& os, Card* card) {
 
 		string valueOutput = "";
 		int value = card->getValue();
-
-		if ( value > 10 ){
-			if (value == 11) os << "Jack";
-			else if (value == 12) os << "Queen";
-			else if (value == 13) os << "King";
-			else if (value == 14) os << "Ace";
-
-		} else {
-			os << value;
-		}
-
-	    os << " of " << suitOutput;
+		os << value << " of " << suitOutput;
 	    return os;
 }
 
@@ -33,7 +22,7 @@ Game::Game(){
 
 	//Creating every Card in the Deck and placing it into array
 	for (int suit = 0; suit < 4; suit++){
-		for (int value = 2; value < 15; value++){
+		for (int value = 2; value < 11; value++){
 			deckOfCards[suit][value - 2] = new Card(value, suit + CLUB);
 		}
 	}
@@ -50,7 +39,7 @@ Game::Game(){
 
 Game::~Game(){
 	for (int i = 0; i < 4; i++){
-		for (int j = 0; j < 13; j++){
+		for (int j = 0; j < 9; j++){
 			delete deckOfCards[i][j];
 		}
 	}
@@ -75,8 +64,8 @@ Card* Game::getCard(int value, int suit){
 
 // input between 0 and 51
 Card* Game::getCard(int value){
-	if (value < 0 || value > 51) return NULL;
-	return deckOfCards[value/13][value%13];
+	if (value < 0 || value > 35) return NULL;
+	return deckOfCards[value/9][value%9];
 }
 
 void Game::updateCommunal(Card *newCommunalCards[5]){
@@ -133,7 +122,7 @@ bool Game::isStraight(Card *allCards[7]){
 		if (allCards[location]->getValue() == allCards[location+1]->getValue()) continue;
 
 		//Finds wheel straights, by checking for an ace when finding a 2
-		if (allCards[location]->getValue() == 2 && allCards[6]->getValue() == 14 ){
+		if (allCards[location]->getValue() == 2 && allCards[6]->getValue() == 10 ){
 			cardsInStraight++;
 		}
 
@@ -203,7 +192,7 @@ bool Game::isStraightFlush(Card *allCards[7]){
 	for(int location = 0; location < suitCards-1; location++){
 
 		//Finds wheel straights, by check if for an ace when finding a 2
-		if (allCardsSuit[location]->getValue() == 2 && allCardsSuit[suitCards-1]->getValue() == 14){
+		if (allCardsSuit[location]->getValue() == 2 && allCardsSuit[suitCards-1]->getValue() == 10){
 			cardsInStraight++;
 		}
 
@@ -660,14 +649,14 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 			}
 		}
 
-		if (hand1 == 14){
+		if (hand1 == 10){
 			bool foundKing = false;
 			bool foundQueen = false;
 			bool foundJack = false;
 			for (int i = 5; i > 1; i--){
-				if (hand1AllCards[i]->getValue() == 13) foundKing = true;
-				if (hand1AllCards[i]->getValue() == 12) foundQueen = true;
-				if (hand1AllCards[i]->getValue() == 11){
+				if (hand1AllCards[i]->getValue() == 9) foundKing = true;
+				if (hand1AllCards[i]->getValue() == 8) foundQueen = true;
+				if (hand1AllCards[i]->getValue() == 7){
 					foundJack = true;
 					break;
 				}
@@ -675,14 +664,14 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 			if (!foundKing || !foundQueen || !foundJack) hand1 = 1;
 		}
 
-		if (hand2 == 14){
+		if (hand2 == 10){
 			bool foundKing = false;
 			bool foundQueen = false;
 			bool foundJack = false;
 			for (int i = 5; i > 1; i--){
-				if (hand2AllCards[i]->getValue() == 13) foundKing = true;
-				if (hand1AllCards[i]->getValue() == 12) foundQueen = true;
-				if (hand1AllCards[i]->getValue() == 11){
+				if (hand2AllCards[i]->getValue() == 9) foundKing = true;
+				if (hand1AllCards[i]->getValue() == 8) foundQueen = true;
+				if (hand1AllCards[i]->getValue() == 7){
 					foundJack = true;
 					break;
 				}
@@ -858,14 +847,14 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		}
 
 
-		if (hand1 == 14){
+		if (hand1 == 10){
 			bool foundKing = false;
 			bool foundQueen = false;
 			bool foundJack = false;
 			for (int i = 5; i > 1; i--){
-				if (hand1AllCards[i]->getValue() == 13 && hand1AllCards[i]->getSuit() == suit1) foundKing = true;
-				if (hand1AllCards[i]->getValue() == 12 && hand1AllCards[i]->getSuit() == suit1) foundQueen = true;
-				if (hand1AllCards[i]->getValue() == 11 && hand1AllCards[i]->getSuit() == suit1){
+				if (hand1AllCards[i]->getValue() == 9 && hand1AllCards[i]->getSuit() == suit1) foundKing = true;
+				if (hand1AllCards[i]->getValue() == 8 && hand1AllCards[i]->getSuit() == suit1) foundQueen = true;
+				if (hand1AllCards[i]->getValue() == 7 && hand1AllCards[i]->getSuit() == suit1){
 					foundJack = true;
 					break;
 				}
@@ -901,14 +890,14 @@ int Game::handComparison(Hand* hand1, Hand* hand2){
 		}
 
 
-		if (hand2 == 14){
+		if (hand2 == 10){
 			bool foundKing = false;
 			bool foundQueen = false;
 			bool foundJack = false;
 			for (int i = 5; i > 1; i--){
-				if (hand2AllCards[i]->getValue() == 13 && hand2AllCards[i]->getSuit() == suit2) foundKing = true;
-				if (hand2AllCards[i]->getValue() == 12 && hand2AllCards[i]->getSuit() == suit2) foundQueen = true;
-				if (hand2AllCards[i]->getValue() == 11 && hand2AllCards[i]->getSuit() == suit2){
+				if (hand2AllCards[i]->getValue() == 9 && hand2AllCards[i]->getSuit() == suit2) foundKing = true;
+				if (hand2AllCards[i]->getValue() == 8 && hand2AllCards[i]->getSuit() == suit2) foundQueen = true;
+				if (hand2AllCards[i]->getValue() == 7 && hand2AllCards[i]->getSuit() == suit2){
 					foundJack = true;
 					break;
 				}
